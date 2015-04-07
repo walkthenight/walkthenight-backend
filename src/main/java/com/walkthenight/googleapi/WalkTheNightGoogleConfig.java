@@ -1,4 +1,4 @@
-package com.walkthenight.googledrive;
+package com.walkthenight.googleapi;
 
 
 public class WalkTheNightGoogleConfig implements GoogleApiConfig {

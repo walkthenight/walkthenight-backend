@@ -19,15 +19,21 @@
 
     <dependencies>
         <!-- Compile/runtime dependencies -->
+        
+	       <dependency>
+	  		<groupId>com.restfb</groupId>
+	  		<artifactId>restfb</artifactId>
+	  		<version>1.8.0</version>
+	  	</dependency>
         <dependency>
 	<groupId>org.jboss.resteasy</groupId>
 	<artifactId>resteasy-jaxrs</artifactId>
-	<version>3.0.4.Final</version>
+	<version>3.0.11.Final</version>
 </dependency>
 <dependency>
 		<groupId>org.jboss.resteasy</groupId>
 		<artifactId>resteasy-jackson-provider</artifactId>
-		<version>3.0.4.Final</version>
+		<version>3.0.11.Final</version>
 	</dependency>
 	 <dependency>
     	<groupId>com.google.gdata</groupId>
@@ -54,11 +60,6 @@
         <artifactId>google-http-client-jackson2</artifactId>
         <version>1.15.0-rc</version>
     </dependency>
-    <dependency>
-	<groupId>com.google.collections</groupId>
-	<artifactId>google-collections</artifactId>
-	<version>1.0-rc2</version>
-</dependency>
   	<dependency>
   		<groupId>com.google.apis</groupId>
   		<artifactId>google-api-services-calendar</artifactId>
