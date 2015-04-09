@@ -26,7 +26,6 @@ public class FacebookVenueGateway {
 			for (com.restfb.types.Event e : connection.getData()) 
 				events.add(eventFrom(e));
 			
-			
 			return events;
 		}
 
@@ -45,7 +44,4 @@ public class FacebookVenueGateway {
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 		return dateFormat.format(date);
 	}
-	
-	
-	
 }
