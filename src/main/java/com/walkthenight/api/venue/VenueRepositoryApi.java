@@ -16,6 +16,7 @@ import javax.ws.rs.core.StreamingOutput;
 
 import com.google.api.client.util.IOUtils;
 import com.walkthenight.data.Event;
+import com.walkthenight.data.Link;
 import com.walkthenight.data.Venue;
 import com.walkthenight.data.VenueRepository;
 import com.walkthenight.repository.MashUpVenueRepository;
@@ -42,6 +43,13 @@ public class VenueRepositoryApi {
 	@Path("/{id}/events")
 	public List<Event> getEvents(@PathParam("id") String venueId) {
 		return repository.getEvents(venueId);
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON) 
+	@Path("/{id}/links")
+	public List<Link> getLinks(@PathParam("id") String venueId) {
+		return repository.getLinks(venueId);
 	}
 	
 	@GET

@@ -15,8 +15,7 @@ import com.restfb.Version;
 import com.walkthenight.data.Event;
 
 public class FacebookVenueGateway {
-	private static final String FB_ACCESS_TOKEN="591079647658892|BraSK1tU2FR9Q2mWaG-S4ClltRw";
-	private final FacebookClient fbClient= new DefaultFacebookClient(FB_ACCESS_TOKEN, Version.VERSION_2_2);
+	private final FacebookClient fbClient= new DefaultFacebookClient(FacebookConfig.FB_ACCESS_TOKEN, Version.VERSION_2_2);
 	
 	  public List<Event> getEvents(String id) {
 			Connection<com.restfb.types.Event> connection = fbClient.fetchConnection(id+"/events", com.restfb.types.Event.class);

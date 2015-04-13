@@ -14,4 +14,6 @@ public interface VenueRepository {
 
 	InputStream getPicture(String venueId);
 
+	List<Link> getLinks(String venueId);
+
 }

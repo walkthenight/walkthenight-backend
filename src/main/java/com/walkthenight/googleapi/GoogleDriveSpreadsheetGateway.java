@@ -73,7 +73,10 @@ public class GoogleDriveSpreadsheetGateway {
 	}
 
 	private Venue mapRowToVenue(CustomElementCollection cec, String facebookId) {
-		return new Venue.Builder(facebookId, cec.getValue("venuename")).googlePlaceId(cec.getValue("googleplaceid")).build();
+		return new Venue.Builder(facebookId, cec.getValue("venuename"))
+			.googlePlaceId(cec.getValue("googleplaceid"))
+			.foursquareVenueId(cec.getValue("foursquarevenueid"))
+			.build();
 	}
 
 	
