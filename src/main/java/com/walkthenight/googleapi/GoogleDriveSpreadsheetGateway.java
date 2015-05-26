@@ -28,6 +28,7 @@ public class GoogleDriveSpreadsheetGateway {
 		return venues; 
 	}
 
+
 	private ListFeed listFeed() {
 		if (null == spreadsheetService) {
 			try {
@@ -76,6 +77,12 @@ public class GoogleDriveSpreadsheetGateway {
 		return new Venue.Builder(facebookId, cec.getValue("venuename"))
 			.googlePlaceId(cec.getValue("googleplaceid"))
 			.foursquareVenueId(cec.getValue("foursquarevenueid"))
+			.latitude(cec.getValue("latitude"))
+			.longitude(cec.getValue("longitude"))
+			.instagramPlaceId(cec.getValue("instagramplaceid"))
+			.facebookUrl(cec.getValue("facebookurl"))
+			.instagramHandle(cec.getValue("instagramhandle"))
+			.twitterHandle(cec.getValue("twitterhandle"))
 			.build();
 	}
 

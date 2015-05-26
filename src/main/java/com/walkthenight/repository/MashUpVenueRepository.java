@@ -27,7 +27,7 @@ public class MashUpVenueRepository implements VenueRepository {
 
 	@Override
 	public Venue getVenue(String id) {
-		return null;
+		return spreadsheetGateway.getVenue(id);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class MashUpVenueRepository implements VenueRepository {
 	public List<Link> getLinks(String venueId) {
 		Venue venue= spreadsheetGateway.getVenue(venueId);
 		if (null != venue && null != venue.getFoursquareVenueId()) {
-			return foursquareVenueGateway.getLinks(venueId);
+			return foursquareVenueGateway.getLinks(venue.getFoursquareVenueId());
 		}
 		return new ArrayList<Link>();
 	}

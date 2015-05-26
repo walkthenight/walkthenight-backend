@@ -18,6 +18,7 @@ import com.google.api.client.util.IOUtils;
 import com.walkthenight.data.Event;
 import com.walkthenight.data.Link;
 import com.walkthenight.data.Venue;
+import com.walkthenight.data.VenueInfo;
 import com.walkthenight.data.VenueRepository;
 import com.walkthenight.repository.MashUpVenueRepository;
 
@@ -59,14 +60,18 @@ public class VenueRepositoryApi {
 
 	    final InputStream in = repository.getPicture(venueId);
 
-	    return Response.ok().entity(new StreamingOutput(){
-	        @Override
-	        public void write(OutputStream output)
-	           throws IOException, WebApplicationException {
-	        	IOUtils.copy(in,output);
-	        	in.close();
-	           output.flush();
-	        }
-	    }).build();
+	    if (null == in) {
+	    	return Response.noContent().build();
+	    } else {
+		    return Response.ok().entity(new StreamingOutput(){
+		        @Override
+		        public void write(OutputStream output)
+		           throws IOException, WebApplicationException {
+		        	IOUtils.copy(in,output);
+		        	in.close();
+		           output.flush();
+		        }
+		    }).build();
+	    }
 	}
 } 
