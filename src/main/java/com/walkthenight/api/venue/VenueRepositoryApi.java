@@ -18,7 +18,6 @@ import com.google.api.client.util.IOUtils;
 import com.walkthenight.data.Event;
 import com.walkthenight.data.Link;
 import com.walkthenight.data.Venue;
-import com.walkthenight.data.VenueInfo;
 import com.walkthenight.data.VenueRepository;
 import com.walkthenight.repository.MashUpVenueRepository;
 
