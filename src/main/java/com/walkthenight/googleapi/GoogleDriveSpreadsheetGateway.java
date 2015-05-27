@@ -74,18 +74,21 @@ public class GoogleDriveSpreadsheetGateway {
 	}
 
 	private Venue mapRowToVenue(CustomElementCollection cec, String facebookId) {
-		return new Venue.Builder(facebookId, cec.getValue("venuename"))
-			.googlePlaceId(cec.getValue("googleplaceid"))
-			.foursquareVenueId(cec.getValue("foursquarevenueid"))
-			.latitude(cec.getValue("latitude"))
-			.longitude(cec.getValue("longitude"))
-			.instagramPlaceId(cec.getValue("instagramplaceid"))
-			.facebookUrl(cec.getValue("facebookurl"))
-			.instagramHandle(cec.getValue("instagramhandle"))
-			.twitterHandle(cec.getValue("twitterhandle"))
-			.build();
+		String longitudeString= cec.getValue("longitude");
+		String latitudeString= cec.getValue("latitude");
+		
+		Venue venue= new Venue();
+		venue.id= facebookId;
+		venue.name= cec.getValue("venuename");
+		venue.googlePlaceId= cec.getValue("googleplaceid");
+		venue.foursquareVenueId= cec.getValue("foursquarevenueid");
+		venue.latitude= latitudeString == null ? 0 : Double.parseDouble(latitudeString);
+		venue.longitude= longitudeString == null ? 0 : Double.parseDouble(latitudeString);
+		venue.instagramPlaceId= cec.getValue("instagramplaceid");
+		venue.facebookUrl= cec.getValue("facebookurl");
+		venue.instagramHandle= cec.getValue("instagramhandle");
+		venue.twitterHandle= cec.getValue("twitterhandle");
+		
+		return venue;
 	}
-
-	
-	
 }

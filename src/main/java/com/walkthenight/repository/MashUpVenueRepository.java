@@ -27,7 +27,12 @@ public class MashUpVenueRepository implements VenueRepository {
 
 	@Override
 	public Venue getVenue(String id) {
-		return spreadsheetGateway.getVenue(id);
+		Venue venue= spreadsheetGateway.getVenue(id);
+		if (!facebookVenueGateway.enrichVenue(venue))
+			if (venue.googlePlaceId != null) {
+				googlePlacesVenueGateway.enrichVenue(venue);
+		}
+		return venue;
 	}
 
 	@Override
@@ -38,8 +43,8 @@ public class MashUpVenueRepository implements VenueRepository {
 	@Override
 	public InputStream getPicture(String venueId) {
 		Venue venue= spreadsheetGateway.getVenue(venueId);
-		if (null != venue && null != venue.getGooglePlaceId()) {
-			return googlePlacesVenueGateway.getPlaceImage(venue.getGooglePlaceId());
+		if (null != venue && null != venue.googlePlaceId) {
+			return googlePlacesVenueGateway.getPlaceImage(venue.googlePlaceId);
 		}
 		return null;
 	}
@@ -47,8 +52,8 @@ public class MashUpVenueRepository implements VenueRepository {
 	@Override
 	public List<Link> getLinks(String venueId) {
 		Venue venue= spreadsheetGateway.getVenue(venueId);
-		if (null != venue && null != venue.getFoursquareVenueId()) {
-			return foursquareVenueGateway.getLinks(venue.getFoursquareVenueId());
+		if (null != venue && null != venue.foursquareVenueId) {
+			return foursquareVenueGateway.getLinks(venue.foursquareVenueId);
 		}
 		return new ArrayList<Link>();
 	}
