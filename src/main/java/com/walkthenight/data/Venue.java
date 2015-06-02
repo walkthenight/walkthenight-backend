@@ -1,12 +1,16 @@
 package com.walkthenight.data;
 
+import java.io.Serializable;
 import java.util.List;
 
 
-public class Venue {
+public class Venue implements Serializable {
 	
-	public static class Period {
+	private static final long serialVersionUID = 5371510401441710916L;
+	public static class Period implements Serializable {
 		
+		private static final long serialVersionUID = 1444288565162786709L;
+
 		public static final String[] DAYS= new String[] {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
 
 		public String openingDay;

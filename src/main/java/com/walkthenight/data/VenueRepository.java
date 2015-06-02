@@ -16,4 +16,6 @@ public interface VenueRepository {
 
 	List<Link> getLinks(String venueId);
 
+	List<String> getPhotos(String venueId);
+
 }

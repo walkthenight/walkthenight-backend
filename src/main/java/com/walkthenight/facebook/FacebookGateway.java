@@ -17,7 +17,7 @@ import com.restfb.json.JsonObject;
 import com.walkthenight.data.Event;
 import com.walkthenight.data.Venue;
 
-public class FacebookVenueGateway {
+public class FacebookGateway {
 	private final FacebookClient fbClient= new DefaultFacebookClient(FacebookConfig.FB_ACCESS_TOKEN, Version.VERSION_2_2);
 	
 	  public List<Event> getEvents(String id) {
@@ -36,6 +36,7 @@ public class FacebookVenueGateway {
 		
 		e.id= fbEvent.getId();
 		e.startTime= getISO8601StringForDate(fbEvent.getStartTime());
+		e.endTime= getISO8601StringForDate(fbEvent.getEndTime());
 		e.location= fbEvent.getLocation();
 		e.name= fbEvent.getName();
 		return e;
@@ -66,6 +67,14 @@ public class FacebookVenueGateway {
 	
 
 	private String buildStreetAddress(JsonObject location) {
-		return location.getString("street") + ", " + location.getString("city") + ", " + location.getString("zip");
+		return location.getString("street") + comma(get(location, "city")) + comma(get(location, "zip"));
+	}
+
+	private String comma(String s) {
+		return s == null ? "" : ", " + s;
+	}
+
+	private String get(JsonObject jo, String key) {
+		return jo.has(key) ? jo.getString(key) : null;
 	}
 }

@@ -19,11 +19,12 @@ import com.walkthenight.data.Event;
 import com.walkthenight.data.Link;
 import com.walkthenight.data.Venue;
 import com.walkthenight.data.VenueRepository;
+import com.walkthenight.repository.CachedVenueRepository;
 import com.walkthenight.repository.MashUpVenueRepository;
 
 @Path("/venues")
 public class VenueRepositoryApi {
-	private VenueRepository repository= new MashUpVenueRepository();
+	private VenueRepository repository= new CachedVenueRepository(new MashUpVenueRepository());
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -50,6 +51,14 @@ public class VenueRepositoryApi {
 	@Path("/{id}/links")
 	public List<Link> getLinks(@PathParam("id") String venueId) {
 		return repository.getLinks(venueId);
+	}
+	
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{id}/photos")
+	public List<String> getPhotos(@PathParam("id") String venueId) {
+		return repository.getPhotos(venueId);
 	}
 	
 	@GET
