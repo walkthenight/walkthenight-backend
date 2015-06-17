@@ -33,6 +33,7 @@ public class Venue implements Serializable {
 	public String phoneNumber;
 	public String website;
 	public List<Period> hours;
+	public String wtnUrl;
 
 	
 }

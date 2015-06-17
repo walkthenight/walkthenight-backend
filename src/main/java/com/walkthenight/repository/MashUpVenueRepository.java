@@ -43,8 +43,11 @@ public class MashUpVenueRepository implements VenueRepository, SeriesRepository 
 	}
 
 	@Override
-	public List<Event> getEvents(String id) {
-		return facebookVenueGateway.getEvents(id);
+	public List<Event> getEvents(String id, String timeframe) {
+		if (null == timeframe) 
+			timeframe="all";
+		
+		return facebookVenueGateway.getEvents(id, timeframe);
 		//:TODO enrich events with link/URI from WordPress
 	}
 

@@ -45,7 +45,7 @@
     <servlet-class>com.fadedglamour.gaereverseproxy.GaeReverseProxyServlet</servlet-class>
     <init-param>
       <param-name>targetUri</param-name>
-      <param-value>http://cms.walkthenight.com</param-value>
+      <param-value>https://walkthenight.com</param-value>
     </init-param>
     <init-param>
       <param-name>log</param-name>

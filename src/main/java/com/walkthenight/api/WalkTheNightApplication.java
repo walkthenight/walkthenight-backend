@@ -17,6 +17,7 @@ public class WalkTheNightApplication extends Application {
         s.add(VenueRepositoryApi.class);
         s.add(SeriesRepositoryApi.class);
         s.add(JsonExceptionHandler.class);
+        s.add(JacksonConfig.class);
         return s;
     }
 	

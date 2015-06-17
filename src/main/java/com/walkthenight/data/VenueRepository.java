@@ -10,7 +10,7 @@ public interface VenueRepository {
 
 	Venue getVenue(String id);
 
-	List<Event> getEvents(String venueId);
+	List<Event> getEvents(String venueId,  String timeframe);
 
 	InputStream getPicture(String venueId);
 

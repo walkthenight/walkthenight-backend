@@ -6,6 +6,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.walkthenight.data.Event;
@@ -28,8 +29,8 @@ public class SeriesRepositoryApi {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON) 
 	@Path("/{id}/events")
-	public List<Event> getEvents(@PathParam("id") String seriesId) {
-		return repository.getEvents(seriesId);
+	public List<Event> getEvents(@PathParam("id") String seriesId, @QueryParam("timeframe") String timeframe) {
+		return repository.getEvents(seriesId, timeframe);
 	}
 }
 

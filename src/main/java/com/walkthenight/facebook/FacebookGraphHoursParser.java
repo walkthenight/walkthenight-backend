@@ -11,6 +11,9 @@ public class FacebookGraphHoursParser {
 	private static String[] days= new String[] {"mon","tue","wed","thu","fri","sat","sun"};
 	
 	public static List<Period> buildHours(JsonObject fbHours) {
+		if (null == fbHours) {
+			return null;
+		}
 		List<Period> periods= new ArrayList<Period>();
 		
 		for (int day= 0; day < days.length; day++) 

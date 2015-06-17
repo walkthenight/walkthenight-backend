@@ -9,6 +9,9 @@ import com.google.gdata.data.spreadsheet.ListFeed;
 import com.walkthenight.data.Venue;
 
 public class GoogleDriveVenueSpreadsheetGateway extends AbstractGoogleDriveSpreadsheetGateway {
+	
+	private static final String FACEBOOK_URL_PREFIX="https://facebook.com/";
+	private static final String WTN_URL_PREFIX = "https://walkthenight.com/losangeles/venues/";
 
 	protected String worksheetKey() {
 		return "oobkxpm";
@@ -59,9 +62,18 @@ public class GoogleDriveVenueSpreadsheetGateway extends AbstractGoogleDriveSprea
 		venue.googlePlaceId= cec.getValue("googleplaceid");
 		venue.foursquareVenueId= cec.getValue("foursquarevenueid");
 		venue.latitude= latitudeString == null ? 0 : Double.parseDouble(latitudeString);
-		venue.longitude= longitudeString == null ? 0 : Double.parseDouble(latitudeString);
+		venue.longitude= longitudeString == null ? 0 : Double.parseDouble(longitudeString);
 		venue.instagramPlaceId= cec.getValue("instagramplaceid");
-		venue.facebookUrl= cec.getValue("facebookurl");
+		
+		String facebookNiceId= cec.getValue("fbniceid");
+		if (null != facebookNiceId) {
+			venue.facebookUrl= FACEBOOK_URL_PREFIX+facebookNiceId;
+			venue.wtnUrl= WTN_URL_PREFIX+facebookNiceId;
+		} else {
+			venue.facebookUrl= FACEBOOK_URL_PREFIX+cec.getValue("facebookurl");
+			venue.wtnUrl= WTN_URL_PREFIX+cec.getValue("wtnpage");
+		}
+		
 		venue.instagramHandle= cec.getValue("instagramhandle");
 		venue.twitterHandle= cec.getValue("twitterhandle");
 		

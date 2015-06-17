@@ -6,6 +6,6 @@ public interface SeriesRepository {
 
 	public Series getSeries(String id);
 	
-	public List<Event> getEvents(String seriesId);
+	public List<Event> getEvents(String seriesId, String timeframe);
 
 }

@@ -63,13 +63,16 @@ public class CachedVenueRepository implements VenueRepository, SeriesRepository 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Event> getEvents(String id) {
+	public List<Event> getEvents(String id, String timeframe) {
+		if (null == timeframe) 
+			timeframe="all";
+		
 		List<Event> events;
-		String key= id+"-events";
+		String key= id+"-"+timeframe+"-events";
 		if (cache.containsKey(key)) {
 			events=  (List<Event>)cache.get(key);
 		} else {
-			events= underlyingRepository.getEvents(id);
+			events= underlyingRepository.getEvents(id, timeframe);
 			cache.put(key, events);
 		}
 		return events;
@@ -108,6 +111,7 @@ public class CachedVenueRepository implements VenueRepository, SeriesRepository 
 		return venuePhotos;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Series getSeries(String id) {
 		Series series;

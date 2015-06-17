@@ -1,80 +1,114 @@
 package com.walkthenight.facebook;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
+import com.restfb.Parameter;
 import com.restfb.Version;
 import com.restfb.exception.FacebookGraphException;
+import com.restfb.json.JsonArray;
 import com.restfb.json.JsonObject;
 import com.walkthenight.data.Event;
+import com.walkthenight.data.Event.Place;
 import com.walkthenight.data.Venue;
 
 public class FacebookGateway {
-	private final FacebookClient fbClient= new DefaultFacebookClient(FacebookConfig.FB_ACCESS_TOKEN, Version.VERSION_2_2);
+	private static final Logger LOG= Logger.getLogger("WalkTheNightApplication");
+	private final FacebookClient fbClient= new DefaultFacebookClient(FacebookConfig.FB_ACCESS_TOKEN, Version.VERSION_2_3);
 	
-	  public List<Event> getEvents(String id) {
-			Connection<com.restfb.types.Event> connection = fbClient.fetchConnection(id+"/events", com.restfb.types.Event.class);
+	  public List<Event> getEvents(String id, String timeframe) {
+			JsonObject connection = fbClient.fetchObject(id+"/events", JsonObject.class,Parameter.with("fields", "start_time, end_time, timezone, name, place"));
 			
 			List<Event> events= new ArrayList<Event>();
 			
-			for (com.restfb.types.Event e : connection.getData()) 
-				events.add(eventFrom(e));
+			JsonArray jsonEvents= connection.getJsonArray("data");
+			
+			for (int i= 0; i < jsonEvents.length(); i++) {
+				Event e = eventFrom(jsonEvents.getJsonObject(i));
+				if (shouldAddEvent(e, timeframe))
+					events.add(e);
+			}
+			
+			Collections.sort(events);
 			
 			return events;
 		}
 
-	private Event eventFrom(com.restfb.types.Event fbEvent) {
+	private boolean shouldAddEvent(Event e, String timeframe) {
+		boolean shouldAddEvent= true;
+		if ("past".equals(timeframe))
+			shouldAddEvent= e.startDate().before(new Date());
+		else if ("future".equals(timeframe))
+			shouldAddEvent= e.startDate().after(new Date());
+		return shouldAddEvent;
+	}
+
+	private Event eventFrom(JsonObject o) {
 		Event e= new Event();
 		
-		e.id= fbEvent.getId();
-		e.startTime= getISO8601StringForDate(fbEvent.getStartTime());
-		e.endTime= getISO8601StringForDate(fbEvent.getEndTime());
-		e.location= fbEvent.getLocation();
-		e.name= fbEvent.getName();
+		e.id= o.getString("id");
+		e.startTime= o.getString("start_time");
+		e.endTime= getString(o, "end_time");
+		e.place= getPlace(getJsonObject(o,"place")); 
+		e.name= o.getString("name");
+		e.timezone= getString(o, "timezone");
 		return e;
 	}
 	
-	private static String getISO8601StringForDate(Date date) {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
-		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-		return dateFormat.format(date);
+	private Place getPlace(JsonObject o) {
+		if (o == null) {
+			return null;
+		}
+		
+		Place p= new Place();
+		p.id= getString(o, "id");
+		p.name= getString(o, "name");
+		
+		JsonObject location= getJsonObject(o, "location");
+		if (null != location) {
+			p.latitude= getString(location, "latitude");
+			p.longitude= getString(location, "longitude");
+		}
+		return p;
 	}
 
 	public boolean enrichVenue(Venue venue) {
 		try {
+			
 			JsonObject venuesConnection= fbClient.fetchObject(venue.id, JsonObject.class);
 		
-			venue.phoneNumber= venuesConnection.getString("phone");
-			venue.website= venuesConnection.getString("website");
-			venue.streetAddress= buildStreetAddress(venuesConnection.getJsonObject("location"));
-			venue.hours= FacebookGraphHoursParser.buildHours(venuesConnection.getJsonObject("hours"));
+			venue.phoneNumber= getString(venuesConnection, "phone");
+			venue.website= getString(venuesConnection, "website");
+			venue.streetAddress= buildStreetAddress(getJsonObject(venuesConnection, "location"));
+			venue.hours= FacebookGraphHoursParser.buildHours(getJsonObject(venuesConnection, "hours"));
 			return true;
 		} catch (FacebookGraphException fge) {
-			//:FIXME LOG.warn("Facebook Graph Exception: ", fge);
+			LOG.log(Level.WARNING, "Facebook Graph Exception: ", fge);
 			return false;
 		}
 		
 	}
 
-	
-
 	private String buildStreetAddress(JsonObject location) {
-		return location.getString("street") + comma(get(location, "city")) + comma(get(location, "zip"));
+		if (null == location) return null;
+		return getString(location, "street") + comma(getString(location, "city")) + comma(getString(location, "zip"));
 	}
 
 	private String comma(String s) {
 		return s == null ? "" : ", " + s;
 	}
 
-	private String get(JsonObject jo, String key) {
+	private String getString(JsonObject jo, String key) {
 		return jo.has(key) ? jo.getString(key) : null;
+	}
+	
+	private JsonObject getJsonObject(JsonObject jo, String key) {
+		return jo.has(key) ? jo.getJsonObject(key) : null;
 	}
 }

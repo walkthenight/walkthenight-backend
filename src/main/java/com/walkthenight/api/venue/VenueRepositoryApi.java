@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -42,8 +43,8 @@ public class VenueRepositoryApi {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON) 
 	@Path("/{id}/events")
-	public List<Event> getEvents(@PathParam("id") String venueId) {
-		return repository.getEvents(venueId);
+	public List<Event> getEvents(@PathParam("id") String venueId, @QueryParam("timeframe") String timeframe) {
+		return repository.getEvents(venueId, timeframe);
 	}
 	
 	@GET
