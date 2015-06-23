@@ -21,7 +21,7 @@ import com.walkthenight.data.VenueRepository;
 public class CachedVenueRepository implements VenueRepository, SeriesRepository {
 
 	private Cache cache;
-	private final MashUpVenueRepository  underlyingRepository;
+	private final MashUpVenueRepository underlyingRepository;
     
     public CachedVenueRepository(MashUpVenueRepository underlyingRepository) {
     	this.underlyingRepository= underlyingRepository;
@@ -39,12 +39,14 @@ public class CachedVenueRepository implements VenueRepository, SeriesRepository 
 	@Override
 	public List<Venue> getVenues() {
 		List<Venue> venues;
+		
 		if (cache.containsKey("venues")) {
 			venues=  (List<Venue>)cache.get("venues");
 		} else {
 			venues= underlyingRepository.getVenues();
 			cache.put("venues", venues);
 		}
+		
 		return venues;
 	}
 
@@ -52,12 +54,14 @@ public class CachedVenueRepository implements VenueRepository, SeriesRepository 
 	@Override
 	public Venue getVenue(String id) {
 		Venue venue;
+		
 		if (cache.containsKey(id)) {
 			venue=  (Venue)cache.get(id);
 		} else {
 			venue= underlyingRepository.getVenue(id);
 			cache.put(id, venue);
 		}
+		
 		return venue;
 	}
 
@@ -69,12 +73,14 @@ public class CachedVenueRepository implements VenueRepository, SeriesRepository 
 		
 		List<Event> events;
 		String key= id+"-"+timeframe+"-events";
+		
 		if (cache.containsKey(key)) {
 			events=  (List<Event>)cache.get(key);
 		} else {
 			events= underlyingRepository.getEvents(id, timeframe);
 			cache.put(key, events);
 		}
+		
 		return events;
 	}
 
@@ -88,12 +94,14 @@ public class CachedVenueRepository implements VenueRepository, SeriesRepository 
 	public List<Link> getLinks(String venueId) {
 		List<Link> venueLinks;
 		String key= venueId+"-links";
+		
 		if (cache.containsKey(key)) {
 			venueLinks=  (List<Link>)cache.get(key);
 		} else {
 			venueLinks= underlyingRepository.getLinks(venueId);
 			cache.put(key, venueLinks);
 		}
+		
 		return venueLinks;
 	}
 
@@ -102,12 +110,14 @@ public class CachedVenueRepository implements VenueRepository, SeriesRepository 
 	public List<String> getPhotos(String venueId) {
 		List<String> venuePhotos;
 		String key= venueId+"-photos";
+		
 		if (cache.containsKey(key)) {
 			venuePhotos=  (List<String>)cache.get(key);
 		} else {
 			venuePhotos= underlyingRepository.getPhotos(venueId);
 			cache.put(key, venuePhotos);
 		}
+		
 		return venuePhotos;
 	}
 
@@ -115,13 +125,31 @@ public class CachedVenueRepository implements VenueRepository, SeriesRepository 
 	@Override
 	public Series getSeries(String id) {
 		Series series;
+		
 		if (cache.containsKey(id)) {
 			series=  (Series)cache.get(id);
 		} else {
 			series= underlyingRepository.getSeries(id);
 			cache.put(id, series);
 		}
+		
 		return series;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> getSeriesPhotos(String seriesId) {
+		List<String> seriesPhotos;
+		String key= seriesId+"-seriesPhotos";
+		
+		if (cache.containsKey(key)) {
+			seriesPhotos=  (List<String>)cache.get(key);
+		} else {
+			seriesPhotos= underlyingRepository.getSeriesPhotos(seriesId);
+			cache.put(key, seriesPhotos);
+		}
+		
+		return seriesPhotos;
 	}
 
 }

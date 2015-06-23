@@ -24,12 +24,16 @@ public class WalkTheNightApplication extends Application {
 	@Override
 	public Set<Object> getSingletons() {
 		Set<Object> s= new HashSet<Object>();
+		s.add(corsFilter());
+		return s;
+	}
+
+	private CorsFilter corsFilter() {
 		CorsFilter filter = new CorsFilter();
 		filter.getAllowedOrigins().add("http://localhost");
 		filter.getAllowedOrigins().add("http://walkthenight.com");
 		filter.getAllowedOrigins().add("https://walkthenight.com");
-		s.add(filter);
-		return s;
+		return filter;
 	}
 	
 }

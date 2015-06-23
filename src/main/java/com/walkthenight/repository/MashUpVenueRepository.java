@@ -88,5 +88,17 @@ public class MashUpVenueRepository implements VenueRepository, SeriesRepository 
 		return seriesSpreadsheetGateway.getSeries(id);
 	}
 
+	@Override
+	public List<String> getSeriesPhotos(String seriesId) {
+		Series series= seriesSpreadsheetGateway.getSeries(seriesId);
+		List<String> photos= new ArrayList<String>();
+		
+		if (null != series) {
+			photos.addAll(facebookVenueGateway.getPhotos(seriesId));
+		}
+		
+		return photos;
+	}
+
 
 }

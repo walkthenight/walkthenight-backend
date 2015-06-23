@@ -32,5 +32,12 @@ public class SeriesRepositoryApi {
 	public List<Event> getEvents(@PathParam("id") String seriesId, @QueryParam("timeframe") String timeframe) {
 		return repository.getEvents(seriesId, timeframe);
 	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{id}/photos")
+	public List<String> getPhotos(@PathParam("id") String seriesId) {
+		return repository.getSeriesPhotos(seriesId);
+	}
 }
 

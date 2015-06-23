@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
@@ -14,6 +15,7 @@ import com.restfb.Version;
 import com.restfb.exception.FacebookGraphException;
 import com.restfb.json.JsonArray;
 import com.restfb.json.JsonObject;
+import com.restfb.types.Photo;
 import com.walkthenight.data.Event;
 import com.walkthenight.data.Event.Place;
 import com.walkthenight.data.Venue;
@@ -93,6 +95,18 @@ public class FacebookGateway {
 			return false;
 		}
 		
+	}
+	
+	public List<String> getPhotos(String pageId) {
+		final List<String> photos= new ArrayList<String>();
+		
+		Connection<Photo> cn= fbClient.fetchConnection(pageId+"/photos", Photo.class);
+		
+		for (List<Photo> photoPage : cn)
+			  for (Photo photo : photoPage)
+				  photos.add(photo.getSource());
+		
+		return photos;
 	}
 
 	private String buildStreetAddress(JsonObject location) {
