@@ -12,13 +12,14 @@ import javax.cache.CacheManager;
 
 import com.google.appengine.api.memcache.stdimpl.GCacheFactory;
 import com.walkthenight.data.Event;
+import com.walkthenight.data.EventRepository;
 import com.walkthenight.data.Link;
 import com.walkthenight.data.Series;
 import com.walkthenight.data.SeriesRepository;
 import com.walkthenight.data.Venue;
 import com.walkthenight.data.VenueRepository;
 
-public class CachedVenueRepository implements VenueRepository, SeriesRepository {
+public class CachedVenueRepository implements VenueRepository, SeriesRepository, EventRepository {
 
 	private Cache cache;
 	private final MashUpVenueRepository underlyingRepository;
@@ -150,6 +151,20 @@ public class CachedVenueRepository implements VenueRepository, SeriesRepository 
 		}
 		
 		return seriesPhotos;
+	}
+
+	@Override
+	public Event getEvent(String id) {
+		Event event;
+		
+		if (cache.containsKey(id)) {
+			event=  (Event)cache.get(id);
+		} else {
+			event= underlyingRepository.getEvent(id);
+			cache.put(id, event);
+		}
+		
+		return event;
 	}
 
 }

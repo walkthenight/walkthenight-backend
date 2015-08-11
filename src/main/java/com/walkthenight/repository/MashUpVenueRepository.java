@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.walkthenight.data.Event;
+import com.walkthenight.data.EventRepository;
 import com.walkthenight.data.Link;
 import com.walkthenight.data.Series;
 import com.walkthenight.data.SeriesRepository;
@@ -17,7 +18,7 @@ import com.walkthenight.googleapi.GoogleDriveVenueSpreadsheetGateway;
 import com.walkthenight.googleapi.GooglePlacesVenueGateway;
 import com.walkthenight.instagram.InstagramGateway;
 
-public class MashUpVenueRepository implements VenueRepository, SeriesRepository {
+public class MashUpVenueRepository implements VenueRepository, SeriesRepository, EventRepository {
 
 	private GoogleDriveVenueSpreadsheetGateway venueSpreadsheetGateway= new GoogleDriveVenueSpreadsheetGateway();
 	private GoogleDriveSeriesSpreadsheetGateway seriesSpreadsheetGateway= new GoogleDriveSeriesSpreadsheetGateway();
@@ -98,6 +99,10 @@ public class MashUpVenueRepository implements VenueRepository, SeriesRepository 
 		}
 		
 		return photos;
+	}
+
+	public Event getEvent(String id) {
+		return facebookVenueGateway.getEvent(id);
 	}
 
 

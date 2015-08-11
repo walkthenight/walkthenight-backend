@@ -17,6 +17,8 @@ public class Event implements Serializable, Comparable<Event> {
 	public String endTime;
 	public String url;
 	public String timezone;
+	public String ticketUri;
+	public String picture;
 	
 	public static class Place implements Serializable {
 		

@@ -22,7 +22,7 @@ import com.walkthenight.data.Venue;
 
 public class FacebookGateway {
 	private static final Logger LOG= Logger.getLogger("WalkTheNightApplication");
-	private final FacebookClient fbClient= new DefaultFacebookClient(FacebookConfig.FB_ACCESS_TOKEN, Version.VERSION_2_3);
+	private final FacebookClient fbClient= new DefaultFacebookClient(FacebookConfig.FB_ACCESS_TOKEN, Version.VERSION_2_4);
 	
 	  public List<Event> getEvents(String id, String timeframe) {
 			JsonObject connection = fbClient.fetchObject(id+"/events", JsonObject.class,Parameter.with("fields", "start_time, end_time, timezone, name, place"));
@@ -125,4 +125,20 @@ public class FacebookGateway {
 	private JsonObject getJsonObject(JsonObject jo, String key) {
 		return jo.has(key) ? jo.getJsonObject(key) : null;
 	}
+
+	public Event getEvent(String id) {
+		JsonObject e= fbClient.fetchObject(id, JsonObject.class,Parameter.with("fields", "start_time,end_time,timezone,name,place,cover,ticket_uri,picture"));
+		
+		Event event= eventFrom(e);
+		
+	// event.ticketUri= e.getTicketUri();
+	    event.picture= pictureFrom(getJsonObject(e, "picture"));
+		
+		return event;
+	}
+
+	private String pictureFrom(JsonObject o) {
+		return getJsonObject(o, "data").getString("url");
+	}
+
 }
