@@ -144,6 +144,12 @@
 			<version>1.9.0</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.jbehave</groupId>
+			<artifactId>jbehave-core</artifactId>
+			<version>4.0.3</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
@@ -164,6 +170,13 @@
 					</execution>
 				</executions>
 			</plugin>
+	        <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-surefire-plugin</artifactId>
+	         	  <configuration>
+	                <workingDirectory>target/walkthenight-backend-0.1-alpha</workingDirectory>
+	            </configuration>
+	        </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<version>3.1</version>

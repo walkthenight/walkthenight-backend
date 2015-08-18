@@ -83,8 +83,7 @@ public class FacebookGateway {
 	public boolean enrichVenue(Venue venue) {
 		try {
 			
-			JsonObject venuesConnection= fbClient.fetchObject(venue.id, JsonObject.class);
-		
+			JsonObject venuesConnection= fbClient.fetchObject(venue.id, JsonObject.class,Parameter.with("fields", "hours,phone,website,location"));
 			venue.phoneNumber= getString(venuesConnection, "phone");
 			venue.website= getString(venuesConnection, "website");
 			venue.streetAddress= buildStreetAddress(getJsonObject(venuesConnection, "location"));
@@ -100,7 +99,7 @@ public class FacebookGateway {
 	public List<String> getPhotos(String pageId) {
 		final List<String> photos= new ArrayList<String>();
 		
-		Connection<Photo> cn= fbClient.fetchConnection(pageId+"/photos", Photo.class);
+		Connection<Photo> cn= fbClient.fetchConnection(pageId+"/photos", Photo.class,Parameter.with("fields", "source"));
 		
 		for (List<Photo> photoPage : cn)
 			  for (Photo photo : photoPage)
