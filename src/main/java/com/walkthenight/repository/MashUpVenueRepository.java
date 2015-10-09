@@ -13,15 +13,15 @@ import com.walkthenight.data.Venue;
 import com.walkthenight.data.VenueRepository;
 import com.walkthenight.facebook.FacebookGateway;
 import com.walkthenight.foursquare.FoursquareVenueGateway;
-import com.walkthenight.googleapi.GoogleDriveSeriesSpreadsheetGateway;
-import com.walkthenight.googleapi.GoogleDriveVenueSpreadsheetGateway;
 import com.walkthenight.googleapi.GooglePlacesVenueGateway;
+import com.walkthenight.googleapi.SeriesWorksheet;
+import com.walkthenight.googleapi.VenueWorksheet;
 import com.walkthenight.instagram.InstagramGateway;
 
 public class MashUpVenueRepository implements VenueRepository, SeriesRepository, EventRepository {
 
-	private GoogleDriveVenueSpreadsheetGateway venueSpreadsheetGateway= new GoogleDriveVenueSpreadsheetGateway();
-	private GoogleDriveSeriesSpreadsheetGateway seriesSpreadsheetGateway= new GoogleDriveSeriesSpreadsheetGateway();
+	private VenueWorksheet venueWorksheet= new VenueWorksheet();
+	private SeriesWorksheet seriesWorksheet= new SeriesWorksheet();
 
 	private GooglePlacesVenueGateway googlePlacesVenueGateway= new GooglePlacesVenueGateway();
 	private FacebookGateway facebookVenueGateway= new FacebookGateway();
@@ -30,12 +30,12 @@ public class MashUpVenueRepository implements VenueRepository, SeriesRepository,
 	
 	@Override
 	public List<Venue> getVenues() {
-		return venueSpreadsheetGateway.getVenues();
+		return venueWorksheet.getVenues();
 	}
 
 	@Override
 	public Venue getVenue(String id) {
-		Venue venue= venueSpreadsheetGateway.getVenue(id);
+		Venue venue= venueWorksheet.getVenue(id);
 		if (null != venue && !facebookVenueGateway.enrichVenue(venue))
 			if (venue.googlePlaceId != null) {
 				googlePlacesVenueGateway.enrichVenue(venue);
@@ -54,7 +54,7 @@ public class MashUpVenueRepository implements VenueRepository, SeriesRepository,
 
 	@Override
 	public InputStream getPicture(String venueId) {
-		Venue venue= venueSpreadsheetGateway.getVenue(venueId);
+		Venue venue= venueWorksheet.getVenue(venueId);
 		if (null != venue && null != venue.googlePlaceId) {
 			return googlePlacesVenueGateway.getPlaceImage(venue.googlePlaceId);
 		}
@@ -63,7 +63,7 @@ public class MashUpVenueRepository implements VenueRepository, SeriesRepository,
 
 	@Override
 	public List<Link> getLinks(String venueId) {
-		Venue venue= venueSpreadsheetGateway.getVenue(venueId);
+		Venue venue= venueWorksheet.getVenue(venueId);
 		if (null != venue && null != venue.foursquareVenueId) {
 			return foursquareVenueGateway.getLinks(venue.foursquareVenueId);
 		}
@@ -72,7 +72,7 @@ public class MashUpVenueRepository implements VenueRepository, SeriesRepository,
 
 	@Override
 	public List<String> getPhotos(String venueId) {
-		Venue venue= venueSpreadsheetGateway.getVenue(venueId);
+		Venue venue= venueWorksheet.getVenue(venueId);
 		List<String> photos= new ArrayList<String>();
 		if (null != venue && null != venue.instagramPlaceId) {
 			photos.addAll(instagramGateway.getPhotosFromLocation(venue.instagramPlaceId));
@@ -86,12 +86,12 @@ public class MashUpVenueRepository implements VenueRepository, SeriesRepository,
 
 	@Override
 	public Series getSeries(String id) {
-		return seriesSpreadsheetGateway.getSeries(id);
+		return seriesWorksheet.getSeries(id);
 	}
 
 	@Override
 	public List<String> getSeriesPhotos(String seriesId) {
-		Series series= seriesSpreadsheetGateway.getSeries(seriesId);
+		Series series= seriesWorksheet.getSeries(seriesId);
 		List<String> photos= new ArrayList<String>();
 		
 		if (null != series) {
@@ -103,6 +103,11 @@ public class MashUpVenueRepository implements VenueRepository, SeriesRepository,
 
 	public Event getEvent(String id) {
 		return facebookVenueGateway.getEvent(id);
+	}
+
+	@Override
+	public List<String> getEventSeriesLinks(String eventId) {
+		return facebookVenueGateway.getEventSeriesLinks(eventId);
 	}
 
 

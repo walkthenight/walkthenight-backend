@@ -174,7 +174,7 @@
 	            <groupId>org.apache.maven.plugins</groupId>
 	            <artifactId>maven-surefire-plugin</artifactId>
 	         	  <configuration>
-	                <workingDirectory>target/walkthenight-backend-0.1-alpha</workingDirectory>
+	                <workingDirectory>${basedir}/src/main/webapp</workingDirectory>
 	            </configuration>
 	        </plugin>
 			<plugin>

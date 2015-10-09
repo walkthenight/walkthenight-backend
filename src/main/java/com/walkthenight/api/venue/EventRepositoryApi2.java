@@ -1,5 +1,7 @@
 package com.walkthenight.api.venue;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -22,5 +24,11 @@ public class EventRepositoryApi2 {
 		return repository.getEvent(id);
 	}
 	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON) 
+	@Path("/{id}/series")
+	public List<String> getEventSeries(@PathParam("id") String id) {
+		return repository.getEventSeriesLinks(id);
+	}
 }
 

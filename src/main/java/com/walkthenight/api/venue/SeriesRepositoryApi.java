@@ -39,5 +39,7 @@ public class SeriesRepositoryApi {
 	public List<String> getPhotos(@PathParam("id") String seriesId) {
 		return repository.getSeriesPhotos(seriesId);
 	}
+	
+	
 }
 

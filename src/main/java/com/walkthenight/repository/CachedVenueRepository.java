@@ -153,6 +153,7 @@ public class CachedVenueRepository implements VenueRepository, SeriesRepository,
 		return seriesPhotos;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Event getEvent(String id) {
 		Event event;
@@ -165,6 +166,21 @@ public class CachedVenueRepository implements VenueRepository, SeriesRepository,
 		}
 		
 		return event;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> getEventSeriesLinks(String eventId) {
+		List<String> eventSeriesLinks;
+		String key= eventId+"-seriesLinks";
+		
+		if (cache.containsKey(key)) {
+			eventSeriesLinks= (List<String>)cache.get(key);
+		} else {
+			eventSeriesLinks= underlyingRepository.getEventSeriesLinks(eventId);
+			cache.put(key, eventSeriesLinks);
+		}
+		return eventSeriesLinks;
 	}
 
 }

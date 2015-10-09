@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
-import com.restfb.Parameter;
+
 import com.restfb.Version;
 import com.restfb.exception.FacebookGraphException;
 import com.restfb.json.JsonArray;
@@ -20,12 +20,17 @@ import com.walkthenight.data.Event;
 import com.walkthenight.data.Event.Place;
 import com.walkthenight.data.Venue;
 
+import static com.restfb.Parameter.with;
+
 public class FacebookGateway {
 	private static final Logger LOG= Logger.getLogger("WalkTheNightApplication");
 	private final FacebookClient fbClient= new DefaultFacebookClient(FacebookConfig.FB_ACCESS_TOKEN, Version.VERSION_2_4);
 	
 	  public List<Event> getEvents(String id, String timeframe) {
-			JsonObject connection = fbClient.fetchObject(id+"/events", JsonObject.class,Parameter.with("fields", "start_time, end_time, timezone, name, place"));
+			JsonObject connection = fbClient.fetchObject(
+					id+"/events", 
+					JsonObject.class, 
+					with("fields", "start_time, end_time, timezone, name, place"));
 			
 			List<Event> events= new ArrayList<Event>();
 			
@@ -42,7 +47,7 @@ public class FacebookGateway {
 			return events;
 		}
 
-	private boolean shouldAddEvent(Event e, String timeframe) {
+	private static boolean shouldAddEvent(Event e, String timeframe) {
 		boolean shouldAddEvent= true;
 		if ("past".equals(timeframe))
 			shouldAddEvent= e.startDate().before(new Date());
@@ -51,43 +56,19 @@ public class FacebookGateway {
 		return shouldAddEvent;
 	}
 
-	private Event eventFrom(JsonObject o) {
-		Event e= new Event();
-		
-		e.id= o.getString("id");
-		e.startTime= o.getString("start_time");
-		e.endTime= getString(o, "end_time");
-		e.place= getPlace(getJsonObject(o,"place")); 
-		e.name= o.getString("name");
-		e.timezone= getString(o, "timezone");
-		return e;
-	}
-	
-	private Place getPlace(JsonObject o) {
-		if (o == null) {
-			return null;
-		}
-		
-		Place p= new Place();
-		p.id= getString(o, "id");
-		p.name= getString(o, "name");
-		
-		JsonObject location= getJsonObject(o, "location");
-		if (null != location) {
-			p.latitude= getString(location, "latitude");
-			p.longitude= getString(location, "longitude");
-		}
-		return p;
-	}
 
 	public boolean enrichVenue(Venue venue) {
 		try {
 			
-			JsonObject venuesConnection= fbClient.fetchObject(venue.id, JsonObject.class,Parameter.with("fields", "hours,phone,website,location"));
-			venue.phoneNumber= getString(venuesConnection, "phone");
-			venue.website= getString(venuesConnection, "website");
-			venue.streetAddress= buildStreetAddress(getJsonObject(venuesConnection, "location"));
-			venue.hours= FacebookGraphHoursParser.buildHours(getJsonObject(venuesConnection, "hours"));
+			JsonObject venuesConnection= fbClient.fetchObject(
+					venue.id, 
+					JsonObject.class,
+					with("fields", "hours,phone,website,location"));
+			
+			venue.phoneNumber= string(venuesConnection, "phone");
+			venue.website= string(venuesConnection, "website");
+			venue.streetAddress= streetAddressFrom(object(venuesConnection, "location"));
+			venue.hours= FacebookGraphHoursParser.buildHours(object(venuesConnection, "hours"));
 			return true;
 		} catch (FacebookGraphException fge) {
 			LOG.log(Level.WARNING, "Facebook Graph Exception: ", fge);
@@ -99,7 +80,10 @@ public class FacebookGateway {
 	public List<String> getPhotos(String pageId) {
 		final List<String> photos= new ArrayList<String>();
 		
-		Connection<Photo> cn= fbClient.fetchConnection(pageId+"/photos", Photo.class,Parameter.with("fields", "source"));
+		Connection<Photo> cn= fbClient.fetchConnection(
+				pageId+"/photos", 
+				Photo.class,
+				with("fields", "source"));
 		
 		for (List<Photo> photoPage : cn)
 			  for (Photo photo : photoPage)
@@ -108,36 +92,108 @@ public class FacebookGateway {
 		return photos;
 	}
 
-	private String buildStreetAddress(JsonObject location) {
-		if (null == location) return null;
-		return getString(location, "street") + comma(getString(location, "city")) + comma(getString(location, "zip"));
-	}
-
-	private String comma(String s) {
-		return s == null ? "" : ", " + s;
-	}
-
-	private String getString(JsonObject jo, String key) {
-		return jo.has(key) ? jo.getString(key) : null;
-	}
-	
-	private JsonObject getJsonObject(JsonObject jo, String key) {
-		return jo.has(key) ? jo.getJsonObject(key) : null;
-	}
 
 	public Event getEvent(String id) {
-		JsonObject e= fbClient.fetchObject(id, JsonObject.class,Parameter.with("fields", "start_time,end_time,timezone,name,place,cover,ticket_uri,picture"));
+		JsonObject e= fbClient.fetchObject(
+				id, 
+				JsonObject.class,
+				with("fields", "start_time,end_time,timezone,name,place,cover,ticket_uri,picture"));
 		
 		Event event= eventFrom(e);
 		
 	// event.ticketUri= e.getTicketUri();
-	    event.picture= pictureFrom(getJsonObject(e, "picture"));
+	    event.picture= pictureFrom(object(e, "picture"));
 		
 		return event;
 	}
 
-	private String pictureFrom(JsonObject o) {
-		return getJsonObject(o, "data").getString("url");
+
+	public List<String> getEventSeriesLinks(String eventId) {
+		final List<String> eventSeriesLinks= new ArrayList<String>();
+		
+		JsonObject result= fbClient.fetchObject(
+				eventId+"/admins", 
+				JsonObject.class);
+		
+		JsonArray admins= array(result, "data");
+		
+		for (int i= 0; i < admins.length(); i++) {
+			String id= string(admins.getJsonObject(i), "id");
+			if (isPage(id)) {
+				eventSeriesLinks.add(id);
+			}
+		}
+	
+		
+		return eventSeriesLinks;
+	}
+
+	private boolean isPage(String id) {
+		JsonObject result= fbClient.fetchObject(
+				id, 
+				JsonObject.class,
+				with("metadata", "1"));
+		
+		JsonObject metadata= object(result, "metadata");
+		
+		String type= string(metadata, "type");
+		
+		return "page".equals(type);
+	}
+	
+	private static Event eventFrom(JsonObject o) {
+		Event e= new Event();
+		
+		e.id= o.getString("id");
+		e.startTime= o.getString("start_time");
+		e.endTime= string(o, "end_time");
+		e.place= placeFrom(object(o,"place")); 
+		e.name= o.getString("name");
+		e.timezone= string(o, "timezone");
+		return e;
+	}
+	
+	private static Place placeFrom(JsonObject o) {
+		if (o == null) {
+			return null;
+		}
+		
+		Place p= new Place();
+		p.id= string(o, "id");
+		p.name= string(o, "name");
+		
+		JsonObject location= object(o, "location");
+		if (null != location) {
+			p.latitude= string(location, "latitude");
+			p.longitude= string(location, "longitude");
+		}
+		return p;
+	}
+
+	
+	private static String streetAddressFrom(JsonObject location) {
+		if (null == location) return null;
+		return string(location, "street") + comma(string(location, "city")) + comma(string(location, "zip"));
+	}
+
+	private static String comma(String s) {
+		return s == null ? "" : ", " + s;
+	}
+
+	private static String string(JsonObject jo, String key) {
+		return jo.has(key) ? jo.getString(key) : null;
+	}
+	
+	private static JsonObject object(JsonObject jo, String key) {
+		return jo.has(key) ? jo.getJsonObject(key) : null;
+	}
+	
+	private static JsonArray array(JsonObject jo, String key) {
+		return jo.has(key) ? jo.getJsonArray(key) : null;
+	}
+	
+	private static String pictureFrom(JsonObject o) {
+		return object(o, "data").getString("url");
 	}
 
 }

@@ -40,6 +40,7 @@ public class WalkTheNightApplication extends Application {
 		filter.getAllowedOrigins().add("http://wtnall.staging.wpengine.com");
 		filter.getAllowedOrigins().add("http://walkthenight.wpengine.com");
 		filter.getAllowedOrigins().add("http://walkthenight.staging.wpengine.com");
+		filter.getAllowedOrigins().add("chrome-extension://hgmloofddffdnphfgcellkdfbfbjeloo");
 		return filter;
 	}
 	

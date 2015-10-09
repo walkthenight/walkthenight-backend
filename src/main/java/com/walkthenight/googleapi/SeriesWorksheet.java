@@ -8,12 +8,10 @@ import com.google.gdata.data.spreadsheet.ListEntry;
 import com.google.gdata.data.spreadsheet.ListFeed;
 import com.walkthenight.data.Series;
 
-public class GoogleDriveSeriesSpreadsheetGateway extends AbstractGoogleDriveSpreadsheetGateway {
+public class SeriesWorksheet {
 
-	@Override
-	protected String worksheetKey() {
-		return "oy51l90";
-	}
+	private GoogleDriveSpreadsheetGateway spreadsheetGateway= new GoogleDriveSpreadsheetGateway();
+		
 	
 	public List<Series> getSeriesList() {
 		ListFeed listFeed = listFeed();
@@ -24,6 +22,10 @@ public class GoogleDriveSeriesSpreadsheetGateway extends AbstractGoogleDriveSpre
 			mapRowToSeries(row, seriesList);
 			 
 		return seriesList; 
+	}
+
+	private ListFeed listFeed() {
+		return spreadsheetGateway.listFeed("oy51l90");
 	}
 
 	private void mapRowToSeries(ListEntry row, List<Series> seriesList) {

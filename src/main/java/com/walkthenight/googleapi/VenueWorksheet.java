@@ -8,15 +8,17 @@ import com.google.gdata.data.spreadsheet.ListEntry;
 import com.google.gdata.data.spreadsheet.ListFeed;
 import com.walkthenight.data.Venue;
 
-public class GoogleDriveVenueSpreadsheetGateway extends AbstractGoogleDriveSpreadsheetGateway {
+public class VenueWorksheet extends GoogleDriveSpreadsheetGateway {
 	
 	private static final String FACEBOOK_URL_PREFIX="https://facebook.com/";
 	private static final String WTN_URL_PREFIX = "https://walkthenight.com/losangeles/venues/";
-
-	protected String worksheetKey() {
-		return "oobkxpm";
-	}
 	
+	private GoogleDriveSpreadsheetGateway spreadsheetGateway= new GoogleDriveSpreadsheetGateway();
+
+	private ListFeed listFeed() {
+		return spreadsheetGateway.listFeed("oobkxpm");
+	}
+
 	public List<Venue> getVenues() {
 		ListFeed listFeed = listFeed();
 		  
