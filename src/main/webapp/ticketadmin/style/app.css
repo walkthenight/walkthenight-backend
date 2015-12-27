@@ -1,0 +1,34 @@
+body {
+  font-family: "adelle";
+  font-weight: 300;
+  background: #16161d;
+  color: white;
+}
+
+h1 {
+	font-weight: 100;
+    color: #aaaaaa;
+    text-transform: uppercase;
+    font-size: 2.4rem;
+    letter-spacing: 0.35rem;
+}
+  
+.jumbotron {
+	background-color: #ec187c;
+	padding-top: 3rem;
+	padding-bottom: 3rem;
+}
+
+.wtn-image {
+	padding-left: 3rem;
+}
+
+.btn {
+	transition: all 0.5s ease;
+	font-weight: 300;
+}
+
+.glyphicon {
+	padding-left: 0.5rem;
+	color: #ec187c;
+}
