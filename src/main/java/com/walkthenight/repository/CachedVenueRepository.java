@@ -82,6 +82,16 @@ public class CachedVenueRepository implements VenueRepository, SeriesRepository,
 			cache.put(key, events);
 		}
 		
+		// augment with URL
+		
+		for (Event event : events) {
+			if (event.place != null && event.place.id != null) {
+				Venue venue= getVenue(event.place.id);
+				if (null != venue)
+					event.wtnVenueUrl= venue.wtnUrl;
+			} 
+		}
+		
 		return events;
 	}
 

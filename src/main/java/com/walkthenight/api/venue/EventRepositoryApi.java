@@ -14,7 +14,7 @@ import com.walkthenight.repository.CachedVenueRepository;
 import com.walkthenight.repository.MashUpVenueRepository;
 
 @Path("/events")
-public class EventRepositoryApi2 {
+public class EventRepositoryApi {
 	private EventRepository repository= new CachedVenueRepository(new MashUpVenueRepository());
 
 	@GET

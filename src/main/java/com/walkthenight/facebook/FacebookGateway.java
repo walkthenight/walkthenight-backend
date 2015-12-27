@@ -30,7 +30,7 @@ public class FacebookGateway {
 			JsonObject connection = fbClient.fetchObject(
 					id+"/events", 
 					JsonObject.class, 
-					with("fields", "start_time, end_time, timezone, name, place"));
+					with("fields", "start_time, end_time, timezone, name, place, description"));
 			
 			List<Event> events= new ArrayList<Event>();
 			
@@ -97,12 +97,12 @@ public class FacebookGateway {
 		JsonObject e= fbClient.fetchObject(
 				id, 
 				JsonObject.class,
-				with("fields", "start_time,end_time,timezone,name,place,cover,ticket_uri,picture"));
+				with("fields", "start_time,end_time,timezone,name,place,cover,ticket_uri,picture,description"));
 		
 		Event event= eventFrom(e);
 		
 	// event.ticketUri= e.getTicketUri();
-	    event.picture= pictureFrom(object(e, "picture"));
+	    event.picture= pictureFrom(object(e, "cover"));
 		
 		return event;
 	}
@@ -150,6 +150,7 @@ public class FacebookGateway {
 		e.place= placeFrom(object(o,"place")); 
 		e.name= o.getString("name");
 		e.timezone= string(o, "timezone");
+		e.description= string(o, "description");
 		return e;
 	}
 	
@@ -166,14 +167,25 @@ public class FacebookGateway {
 		if (null != location) {
 			p.latitude= string(location, "latitude");
 			p.longitude= string(location, "longitude");
+			p.streetAddress= streetAddressFrom(location);
 		}
+		
+		
+		
 		return p;
 	}
 
 	
 	private static String streetAddressFrom(JsonObject location) {
 		if (null == location) return null;
-		return string(location, "street") + comma(string(location, "city")) + comma(string(location, "zip"));
+		
+		if (string(location, "street") == null) {
+			return string(location, "city") + comma(string(location, "zip"));
+		} else {
+			return string(location, "street") + comma(string(location, "city")) + comma(string(location, "zip"));
+		}
+		
+		//:TODO doesn't feel optimal...
 	}
 
 	private static String comma(String s) {
@@ -193,7 +205,8 @@ public class FacebookGateway {
 	}
 	
 	private static String pictureFrom(JsonObject o) {
-		return object(o, "data").getString("url");
+	
+		return o.getString("source");
 	}
 
 }

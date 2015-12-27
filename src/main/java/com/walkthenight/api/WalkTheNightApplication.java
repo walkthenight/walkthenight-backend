@@ -7,8 +7,10 @@ import javax.ws.rs.core.Application;
 
 import org.jboss.resteasy.plugins.interceptors.CorsFilter;
 
-import com.walkthenight.api.venue.EventRepositoryApi2;
+import com.walkthenight.api.venue.EventRepositoryApi;
 import com.walkthenight.api.venue.SeriesRepositoryApi;
+import com.walkthenight.api.venue.TicketRepositoryApi;
+import com.walkthenight.api.venue.TicketedEventRepositoryApi;
 import com.walkthenight.api.venue.VenueRepositoryApi;
 
 public class WalkTheNightApplication extends Application {
@@ -18,7 +20,9 @@ public class WalkTheNightApplication extends Application {
         
         s.add(VenueRepositoryApi.class);
         s.add(SeriesRepositoryApi.class);
-        s.add(EventRepositoryApi2.class);
+        s.add(EventRepositoryApi.class);
+        s.add(TicketRepositoryApi.class);
+        s.add(TicketedEventRepositoryApi.class);
         s.add(JsonExceptionHandler.class);
         s.add(JacksonConfig.class);
         return s;

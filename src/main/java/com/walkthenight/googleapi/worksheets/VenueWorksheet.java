@@ -1,4 +1,4 @@
-package com.walkthenight.googleapi;
+package com.walkthenight.googleapi.worksheets;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,11 +7,12 @@ import com.google.gdata.data.spreadsheet.CustomElementCollection;
 import com.google.gdata.data.spreadsheet.ListEntry;
 import com.google.gdata.data.spreadsheet.ListFeed;
 import com.walkthenight.data.Venue;
+import com.walkthenight.googleapi.GoogleDriveSpreadsheetGateway;
 
 public class VenueWorksheet extends GoogleDriveSpreadsheetGateway {
 	
 	private static final String FACEBOOK_URL_PREFIX="https://facebook.com/";
-	private static final String WTN_URL_PREFIX = "https://walkthenight.com/losangeles/venues/";
+	private static final String WTN_URL_PREFIX = "http://walkthenight.com/la/venues/";
 	
 	private GoogleDriveSpreadsheetGateway spreadsheetGateway= new GoogleDriveSpreadsheetGateway();
 
@@ -68,13 +69,8 @@ public class VenueWorksheet extends GoogleDriveSpreadsheetGateway {
 		venue.instagramPlaceId= cec.getValue("instagramplaceid");
 		
 		String facebookNiceId= cec.getValue("fbniceid");
-		if (null != facebookNiceId) {
-			venue.facebookUrl= FACEBOOK_URL_PREFIX+facebookNiceId;
-			venue.wtnUrl= WTN_URL_PREFIX+facebookNiceId;
-		} else {
-			venue.facebookUrl= FACEBOOK_URL_PREFIX+cec.getValue("facebookurl");
-			venue.wtnUrl= WTN_URL_PREFIX+cec.getValue("wtnpage");
-		}
+		venue.facebookUrl= FACEBOOK_URL_PREFIX + (null == facebookNiceId ? cec.getValue("facebookurl") : facebookNiceId);
+		venue.wtnUrl= (null == facebookNiceId ? cec.getValue("wtnpage") : facebookNiceId);
 		
 		venue.instagramHandle= cec.getValue("instagramhandle");
 		venue.twitterHandle= cec.getValue("twitterhandle");

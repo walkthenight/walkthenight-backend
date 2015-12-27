@@ -14,15 +14,17 @@ import com.walkthenight.data.VenueRepository;
 import com.walkthenight.facebook.FacebookGateway;
 import com.walkthenight.foursquare.FoursquareVenueGateway;
 import com.walkthenight.googleapi.GooglePlacesVenueGateway;
-import com.walkthenight.googleapi.SeriesWorksheet;
-import com.walkthenight.googleapi.VenueWorksheet;
+import com.walkthenight.googleapi.worksheets.EventWorksheet;
+import com.walkthenight.googleapi.worksheets.SeriesWorksheet;
+import com.walkthenight.googleapi.worksheets.VenueWorksheet;
 import com.walkthenight.instagram.InstagramGateway;
 
 public class MashUpVenueRepository implements VenueRepository, SeriesRepository, EventRepository {
 
 	private VenueWorksheet venueWorksheet= new VenueWorksheet();
 	private SeriesWorksheet seriesWorksheet= new SeriesWorksheet();
-
+	private EventWorksheet eventWorksheet= new EventWorksheet();
+	
 	private GooglePlacesVenueGateway googlePlacesVenueGateway= new GooglePlacesVenueGateway();
 	private FacebookGateway facebookVenueGateway= new FacebookGateway();
 	private FoursquareVenueGateway foursquareVenueGateway= new FoursquareVenueGateway();
@@ -48,8 +50,13 @@ public class MashUpVenueRepository implements VenueRepository, SeriesRepository,
 		if (null == timeframe) 
 			timeframe="all";
 		
-		return facebookVenueGateway.getEvents(id, timeframe);
-		//:TODO enrich events with link/URI from WordPress
+		List<Event> events= facebookVenueGateway.getEvents(id, timeframe);
+		
+		for (Event event : events) {
+			event.wtnManagedEventUrlName= eventWorksheet.getWtnManagedEventUrlName(event.id);
+		}
+		
+		return events;
 	}
 
 	@Override
@@ -102,7 +109,11 @@ public class MashUpVenueRepository implements VenueRepository, SeriesRepository,
 	}
 
 	public Event getEvent(String id) {
-		return facebookVenueGateway.getEvent(id);
+		Event event= facebookVenueGateway.getEvent(id);
+		if (null != event) {
+			event.wtnManagedEventUrlName= eventWorksheet.getWtnManagedEventUrlName(id);
+		}
+		return event;
 	}
 
 	@Override

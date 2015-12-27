@@ -19,6 +19,9 @@ public class Event implements Serializable, Comparable<Event> {
 	public String timezone;
 	public String ticketUri;
 	public String picture;
+	public String description;
+	public String wtnVenueUrl;
+	public String wtnManagedEventUrlName;
 	
 	public static class Place implements Serializable {
 		
@@ -27,6 +30,7 @@ public class Event implements Serializable, Comparable<Event> {
 		public String name;
 		public String latitude;
 		public String longitude;
+		public String streetAddress;
 	}
 	
 	@Override

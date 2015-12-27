@@ -1,4 +1,4 @@
-package com.walkthenight.googleapi;
+package com.walkthenight.googleapi.worksheets;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import com.google.gdata.data.spreadsheet.CustomElementCollection;
 import com.google.gdata.data.spreadsheet.ListEntry;
 import com.google.gdata.data.spreadsheet.ListFeed;
 import com.walkthenight.data.Series;
+import com.walkthenight.googleapi.GoogleDriveSpreadsheetGateway;
 
 public class SeriesWorksheet {
 
