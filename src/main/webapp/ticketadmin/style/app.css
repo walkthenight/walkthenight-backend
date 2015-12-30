@@ -15,8 +15,8 @@ h1 {
   
 .jumbotron {
 	background-color: #ec187c;
-	padding-top: 3rem;
-	padding-bottom: 3rem;
+	padding-top: 3.2rem;
+	padding-bottom: 3.2rem;
 }
 
 .wtn-image {
@@ -29,6 +29,41 @@ h1 {
 }
 
 .glyphicon {
-	padding-left: 0.5rem;
+	padding: 0 0.5rem;
 	color: #ec187c;
 }
+
+.list-group, .list-group-item {
+	background-color: #222222;
+}
+
+.event-title, .event-date {
+	display: block;
+	color: #aaaaaa;
+	font-size: 1.4em;
+	margin-bottom: 0.7em;
+	
+}
+
+.logged-in {
+	font-size: 1.2em;
+    padding-top: 0.3em;
+}
+
+.event-description {
+	display: block;
+}
+
+.event-description br {
+	height: 0.8rem;
+}
+
+/*
+.fade.ng-enter {
+  transition:0.5s linear all;
+  opacity:0;
+}
+
+.fade.ng-enter.ng-enter-active {
+  opacity:1;
+}*/

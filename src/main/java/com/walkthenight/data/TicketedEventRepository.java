@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface TicketedEventRepository {
 
-	List<TicketedEvent> getTicketedEvents();
+	List<TicketedEvent> getTicketedEvents(String fbAccessToken);
 
-	TicketedEvent getTicketedEvent(String id);
+	TicketedEvent getTicketedEvent(String fbAccessToken, String id);
 
 }

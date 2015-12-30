@@ -22,6 +22,8 @@ public class Event implements Serializable, Comparable<Event> {
 	public String description;
 	public String wtnVenueUrl;
 	public String wtnManagedEventUrlName;
+	public String tickeraEventId;
+	public String tickeraPrimaryTicketId;
 	
 	public static class Place implements Serializable {
 		

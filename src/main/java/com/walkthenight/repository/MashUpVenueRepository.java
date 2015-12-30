@@ -53,7 +53,7 @@ public class MashUpVenueRepository implements VenueRepository, SeriesRepository,
 		List<Event> events= facebookVenueGateway.getEvents(id, timeframe);
 		
 		for (Event event : events) {
-			event.wtnManagedEventUrlName= eventWorksheet.getWtnManagedEventUrlName(event.id);
+			eventWorksheet.augmentEvent(event);
 		}
 		
 		return events;
@@ -111,7 +111,7 @@ public class MashUpVenueRepository implements VenueRepository, SeriesRepository,
 	public Event getEvent(String id) {
 		Event event= facebookVenueGateway.getEvent(id);
 		if (null != event) {
-			event.wtnManagedEventUrlName= eventWorksheet.getWtnManagedEventUrlName(id);
+			eventWorksheet.augmentEvent(event);
 		}
 		return event;
 	}
