@@ -8,6 +8,7 @@ import com.walkthenight.data.Ticket;
 import com.walkthenight.data.TicketRepository;
 import com.walkthenight.data.TicketedEvent;
 import com.walkthenight.data.TicketedEventRepository;
+import com.walkthenight.data.TicketedEventSpec;
 import com.walkthenight.googleapi.worksheets.EventWorksheet;
 import com.walkthenight.wordpress.WordPressPageGateway;
 import com.walkthenight.wordpress.tickera.TickeraEventGateway;
@@ -21,18 +22,14 @@ public class TickeraTicketRepository implements TicketRepository, TicketedEventR
 	private WordPressPageGateway pageGateway= new WordPressPageGateway();
 	private EventWorksheet eventWorksheet= new EventWorksheet();
 	
-	public static void main(String[] args) throws Exception {
-		TickeraTicketRepository repository= new TickeraTicketRepository();
-		repository.createTicketedEvent("925950214165994", "Admission", 10, 100);
-	}
 
-	public void createTicketedEvent(String facebookEventId, String ticketDescription, int price, int quantity) {
-		Event event= eventRepository.getEvent(facebookEventId);
-		String ticketId= ticketGateway.createTicket(ticketDescription, price, quantity);
+	public void createTicketedEvent(TicketedEventSpec spec) {
+		Event event= eventRepository.getEvent(spec.facebookEventId);
+		String ticketId= ticketGateway.createTicket(spec.ticketDescription, spec.price, spec.quantity);
 		String tickeraEventId= eventGateway.createTicketedEvent(event, ticketId);
 		ticketGateway.updateTicketWithEventId(ticketId, tickeraEventId);
 		String pageSlug= pageGateway.createEventPage(event, ticketId); 
-		eventWorksheet.addWtnManagedEvent(facebookEventId, pageSlug, tickeraEventId, ticketId);
+		eventWorksheet.addWtnManagedEvent(spec.facebookEventId, pageSlug, tickeraEventId, ticketId);
 	}
 
 
