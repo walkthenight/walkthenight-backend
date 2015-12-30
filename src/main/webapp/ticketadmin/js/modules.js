@@ -1,32 +1,33 @@
 var wtnTicketingApp = angular.module('wtnTicketingApp', ['ngSanitize', 'ngAnimate', 'ngFacebook', 'angularSpinner']);
 
-wtnTicketingApp.config( function( $facebookProvider ) {
-  $facebookProvider.setAppId('591079647658892');
-})
+wtnTicketingApp
+    .config( function( $facebookProvider ) {
+      $facebookProvider.setAppId('591079647658892');
+    })
 
-.config(['usSpinnerConfigProvider', function (usSpinnerConfigProvider) {
-    usSpinnerConfigProvider.setDefaults({color: 'white'});
-}])
+    .config(['usSpinnerConfigProvider', function (usSpinnerConfigProvider) {
+        usSpinnerConfigProvider.setDefaults({color: 'white'});
+    }])
 
-.run ( function( $rootScope ) {
-	  // Cut and paste the "Load the SDK" code from the facebook javascript sdk page.
+    .run ( function( $rootScope ) {
+    	  // Cut and paste the "Load the SDK" code from the facebook javascript sdk page.
 
-	  // Load the facebook SDK asynchronously
-	(function(d, s, id) {
-	    var js, fjs = d.getElementsByTagName(s)[0];
-	    if (d.getElementById(id)) return;
-	    js = d.createElement(s); js.id = id;
-	    js.src = "//connect.facebook.net/en_US/sdk.js";
-	    fjs.parentNode.insertBefore(js, fjs);
-	  }(document, 'script', 'facebook-jssdk'));
-	
-	})
-	
- .filter('newlines', function () {
-    return function(text) {
-        return text.replace(/\n/g, '<br/>');
-    }
- })
+    	  // Load the facebook SDK asynchronously
+    	(function(d, s, id) {
+    	    var js, fjs = d.getElementsByTagName(s)[0];
+    	    if (d.getElementById(id)) return;
+    	    js = d.createElement(s); js.id = id;
+    	    js.src = "//connect.facebook.net/en_US/sdk.js";
+    	    fjs.parentNode.insertBefore(js, fjs);
+    	  }(document, 'script', 'facebook-jssdk'));
+    	
+    	})
+    	
+     .filter('newlines', function () {
+        return function(text) {
+            return text.replace(/\n/g, '<br/>');
+        }
+     })
 
  
  .directive('readMore', function() {
@@ -83,7 +84,7 @@ wtnTicketingApp.config( function( $facebookProvider ) {
           if (foundWords.length > limit) {
             text = foundWords.slice(0, limit).join(' ') + ellipsis;
             more = foundWords.slice(limit, count).join(' ');
-            markup = text + moreText + '<span class="more-text">' + more + lessText + '</span>';
+            markup = text + moreText + '<span class="more-text">' + more + lessText + '</span>'
           }
 
         } else { // Count characters
@@ -109,7 +110,26 @@ wtnTicketingApp.config( function( $facebookProvider ) {
       }
     }
   };
-});
+})
+
+    .directive('actions', function() {
+        return {
+            restrict: 'A',
+            transclude: true,
+            replace: true,
+            template: '<div class="wtn-promoter-actions"></div>',
+            scope: {
+                
+            },
+            link: function(scope, elem, attr, ctrl, transclude) {
+                var addTicketBtn = '<button class="wtn-promoter-actions-addticket" data-id="">Add a Ticket</button>';
+
+                // call the API & pop in the right data
+
+                elem.append(addTicketBtn);
+            }
+        };
+    });
 	
 ;
 
