@@ -50,7 +50,7 @@ public class EventWorksheet {
 		
 		CustomElementCollection cec= entry.getCustomElements();
 		
-		cec.setValueLocal("fbeventid", fbEventId);
+		cec.setValueLocal("fbeventid", "'"+fbEventId); // single quotes needed to make sure it's a string...
 		cec.setValueLocal("eventurlname", pageUrl);
 		cec.setValueLocal("tickeraeventid", tickeraEventId);
 		cec.setValueLocal("tickeraprimaryticketid", tickeraTicketId);

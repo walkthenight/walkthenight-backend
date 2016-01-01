@@ -50,6 +50,7 @@ public class PromoterWorksheet {
 			
 			promoter.email= emailAddress;
 			promoter.pageId= cec.getValue("fbpageid");
+			promoter.pageName= cec.getValue("name");
 			
 			return promoter;
 		} 

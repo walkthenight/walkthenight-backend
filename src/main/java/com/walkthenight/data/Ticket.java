@@ -9,4 +9,5 @@ public class Ticket {
 	public String eventId;
 	public String id;
 	public String description;
+	public int ticketsSold;
 }

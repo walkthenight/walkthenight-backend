@@ -16,6 +16,7 @@ import com.restfb.exception.FacebookGraphException;
 import com.restfb.json.JsonArray;
 import com.restfb.json.JsonObject;
 import com.restfb.types.Photo;
+import com.restfb.types.User;
 import com.walkthenight.data.Event;
 import com.walkthenight.data.Event.Place;
 import com.walkthenight.data.Venue;
@@ -24,7 +25,25 @@ import static com.restfb.Parameter.with;
 
 public class FacebookGateway {
 	private static final Logger LOG= Logger.getLogger("WalkTheNightApplication");
-	private final FacebookClient fbClient= new DefaultFacebookClient(FacebookConfig.FB_ACCESS_TOKEN, Version.VERSION_2_4);
+	
+	private static final Version API_VERSION= Version.VERSION_2_4;
+	
+	private final FacebookClient fbClient;
+	
+	public FacebookGateway() {
+		this.fbClient= new DefaultFacebookClient(FacebookConfig.FB_ACCESS_TOKEN, API_VERSION);
+	}
+	
+	public FacebookGateway(String accessToken) {
+		this.fbClient= new DefaultFacebookClient(accessToken, API_VERSION);
+	}
+	
+	public void checkAccess(String email) {
+		User user= fbClient.fetchObject("me", User.class, with("fields","email"));
+		if (!user.getEmail().equals(email)) {
+			throw new SecurityException("Access token for " + email + "not valid");
+		}
+	}
 	
 	  public List<Event> getEvents(String id, String timeframe) {
 			JsonObject connection = fbClient.fetchObject(

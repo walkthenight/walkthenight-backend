@@ -4,5 +4,6 @@ public class Promoter {
 
 	public String email;
 	public String pageId;
+	public String pageName;
 
 }

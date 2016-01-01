@@ -3,10 +3,11 @@
 <head>
 <title>Walk the Night | Ticket administration</title>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="style/sc-btn.css">
-<link rel="stylesheet" href="style/app.css">
+
+
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
@@ -14,13 +15,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-sanitize.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-animate.js"></script>
 
-<script src="js/spin.js"></script>
-<script src="js/angular-spinner.js"></script>
+<script src="js/third-party/spin.js"></script>
+<script src="js/third-party/angular-spinner.js"></script>
+<script src="js/third-party/ngFacebook.js"></script>
+<link rel="stylesheet" href="style/third-party/sc-btn.css">
 
-<script src="js/ngFacebook.js"></script>
 <script src="js/modules.js"></script>
 <script src="js/factories.js"></script>
 <script src="js/controllers.js"></script>
+<link rel="stylesheet" href="style/app.css">
 
 <script src="https://use.typekit.net/hql5ihu.js"></script>
 <script>try{Typekit.load({ async: true });}catch(e){}</script>
@@ -37,7 +40,7 @@
 	        </div>
 	        <div class="col-md-4">
 	            <div class="logged-in">
-            		<span ng-show="isLoggedIn" class="wtn-label">Hey {{loggedInName}}</span>
+            		<span ng-show="isLoggedIn" class="wtn-label smooth">Hey {{loggedInName}}</span>
         		</div>
         		
 	            	<a href ng-hide="isLoggedIn || maybeLoggedIn" ng-click="login()" class="sc-btn sc--tiny sc--facebook sc--flat">
@@ -57,18 +60,35 @@
 		<div class="row">
 			<div class="col-md-12">	
 				
-				<h1>Ticket administration</h1>
+				<h1 ng-show="hasPageToAdminister">Ticket administration for {{pageName}}</h1>
 				<div class="list-group">
 					<div class="row list-group-item" ng-repeat="event in events">
-						<div class="col-md-2">
-							<span class="event-date">{{event.startTime | date:'MM/dd/yyyy'}}</span> 
-							<span class="event-location">{{event.place.name}}</span> 
+						<div class="col-md-2 form-group">
+							<span class="event-date"><i class="fa fa-calendar"></i>{{event.startTime | date:'MM/dd/yyyy'}}</span> 
+							<span class="event-location"><i class="fa fa-map-marker"></i>{{event.place.name}}</span> 
 						</div>
-						<div class="col-md-8">
+						<div class="col-md-8 form-group">
 							<span class="event-title" ng-bind-html="event.name"></span>
 							<p class="event-description" ng-bind-html="event.description | newlines" read-more></p>
 						</div>
-						<div class="col-md-2"></div>
+						<div class="col-md-2 form-group">
+							<div ng-hide="event.tickeraPrimaryTicketId">
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ticket-modal" ng-click="addingTicket(event.id, event.name)">Add ticket</button>
+							</div>
+							<div ng-show="event.tickeraPrimaryTicketId" class="smooth">
+								<div class="event-on-sale">
+									<a href="http://walkthenight.com/la/event/{{wtnManagedEventUrlName}}" target="_blank">On sale</a>
+								</div>
+								<div ng-show="event.ticketsAvailable" class="ng-smooth event-tickets">
+									<p>
+										{{event.ticketsAvailable}} tickets available @ ${{event.ticketPrice}}.00
+									</p>
+									<p>
+										{{event.ticketsSold}} tickets sold
+									</p>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -76,6 +96,48 @@
 	</div>
 
  	<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
+    
+    <div class="modal fade ticket-creation" my-modal id="ticket-modal" role="dialog">
+            <div class="modal-dialog has-spinner" ng-class="{active:isAddingTicket}">
+
+                <div class="modal-content">
+                	<form>
+                		<fieldset ng-disabled="isAddingTicket" >
+	                    <div class="modal-header">
+	                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                        <h2 class="modal-title">Create a ticket for {{ticketedEventName}}</h4>
+	                    </div>
+	                    <div class="modal-body">
+					      
+						  <div class="form-group">
+						    <label for="inputDescription">Description</label>
+						    <input type="text" class="form-control" id="inputDescription" placeholder="Enter ticket description e.g. Admission" ng-model="ticketedEventSpec.ticketDescription">
+						  </div>
+						  <div class="form-group">
+						    <label for="inputPrice">Price</label>
+						    <input type="number" class="form-control" id="inputPrice" placeholder="Ticket price in dollars (no cents)" ng-model="ticketedEventSpec.price">
+						  </div>
+						  <div class="form-group">
+						    <label for="inputQuantity">Quantity</label>
+						    <input type="number" class="form-control" id="inputQuantity" placeholder="Quantity of tickets" ng-model="ticketedEventSpec.quantity">
+						  </div>
+						
+						</div>
+						<div class="modal-footer ticket-buttons" style='text-align:right'>
+						    <button type="button" class="btn btn-primary" ng-click="addTicket()">Submit<span class="btn-spinner"><i class="fa fa-refresh fa-spin"></i></span></button>
+	                    	<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	                      </div>
+	                    </fieldset>
+						</form>
+						
+						                       
+
+                    </div>
+
+
+                </div>
+            </div>
+    </div>
     
 </body>
 </html>

@@ -8,6 +8,6 @@ public interface TicketedEventRepository {
 
 	TicketedEvent getTicketedEvent(String fbAccessToken, String id);
 
-	void createTicketedEvent(TicketedEventSpec spec);
+	void createTicketedEvent(String fbAccessToken, TicketedEventSpec spec);
 
 }

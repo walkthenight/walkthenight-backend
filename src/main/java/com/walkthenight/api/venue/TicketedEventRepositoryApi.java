@@ -37,7 +37,7 @@ public class TicketedEventRepositoryApi {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void createTicketedEvent(TicketedEventSpec spec) {
-		repository.createTicketedEvent(spec);
+	public void createTicketedEvent(TicketedEventSpec spec, @QueryParam("access_token") String accessToken) {
+		repository.createTicketedEvent(accessToken, spec);
 	}
 }

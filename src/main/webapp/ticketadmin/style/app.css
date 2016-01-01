@@ -11,6 +11,7 @@ h1 {
     text-transform: uppercase;
     font-size: 2.4rem;
     letter-spacing: 0.35rem;
+    margin-bottom: 4rem;
 }
   
 .jumbotron {
@@ -20,8 +21,31 @@ h1 {
 }
 
 .wtn-image {
-	padding-left: 3rem;
+	padding-left: 1.5rem;
+	padding-right: 1.5rem;
+	width: 100%;
 }
+
+.logged-in {
+	font-size: 1.2em;
+    padding-top: 0.3em;
+    padding-left: 1.5rem;
+}
+
+
+ /* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+	.wtn-image {
+		padding-left: 3rem;
+		width: auto;
+	}
+	
+	.logged-in {
+	    padding-left: 0;
+	}
+}
+
+
 
 .btn {
 	transition: all 0.5s ease;
@@ -35,9 +59,36 @@ h1 {
 
 .list-group, .list-group-item {
 	background-color: #222222;
+	border: none;
+	border-top-left-radius: 0; 
+    border-top-right-radius: 0;
 }
 
-.event-title, .event-date {
+.list-group-item {
+    padding: 3rem 15px;
+}
+
+/* Buttons */
+
+.btn {
+	border-radius: 0;
+}
+
+.btn-primary.disabled, .btn-primary.disabled.active, .btn-primary.disabled.focus, .btn-primary.disabled:active, .btn-primary.disabled:focus, .btn-primary.disabled:hover, .btn-primary[disabled], .btn-primary[disabled].active, .btn-primary[disabled].focus, .btn-primary[disabled]:active, .btn-primary[disabled]:focus, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary, fieldset[disabled] .btn-primary.active, fieldset[disabled] .btn-primary.focus, fieldset[disabled] .btn-primary:active, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary:hover {
+	color: #fff;
+    background-color: rgba(236, 24, 124, 1);
+    border-color: rgba(236, 24, 124, 1);
+}
+
+
+.btn-primary:hover {
+    background-color: rgba(236, 24, 124, 0.5);
+    border-color: rgba(236, 24, 124, 0.5);
+}
+
+/* Events */
+
+.event-title, .event-date, .event-on-sale {
 	display: block;
 	color: #aaaaaa;
 	font-size: 1.4em;
@@ -45,25 +96,138 @@ h1 {
 	
 }
 
-.logged-in {
-	font-size: 1.2em;
-    padding-top: 0.3em;
+.event-date .fa, .event-location .fa {
+	padding-right: 1rem;
 }
+
+.event-on-sale a {
+	color: #aaaaaa;
+	transition: all 0.5s ease;
+}
+
+.event-on-sale a:hover {
+	color: #ffffff;
+	text-decoration: none;
+}
+
+
 
 .event-description {
 	display: block;
+	color: #cccccc;
 }
 
 .event-description br {
 	height: 0.8rem;
 }
 
-/*
-.fade.ng-enter {
-  transition:0.5s linear all;
+.event-tickets {
+	font-size: 1.4em;
+}
+
+.smooth.ng-enter {
+  transition:0.5s ease all;
   opacity:0;
 }
 
-.fade.ng-enter.ng-enter-active {
+.smooth.ng-enter.ng-enter-active {
   opacity:1;
-}*/
+}
+
+.smooth.ng-leave {
+  transition:0.5s ease all;
+  opacity:1;
+}
+.smooth.ng-leave.ng-leave-active {
+  opacity:0;
+}
+
+.modal-header, .modal-footer {
+	border: none;
+}
+
+.modal-content {
+  width: 100%;
+  background-color: #333333;
+  margin: 0 auto;
+  pointer-events: auto;
+  border-radius: 0;
+}
+
+.modal-dialog {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.close {
+    transition:0.5s ease all;
+    font-weight: 100;
+    font-size: 36px;
+    line-height: 0.5;
+    color: #fff;
+    text-shadow: 0 1px 0 #000;
+    opacity: .8;
+}
+
+h2 {
+	font-weight: 300;
+	color: #cccccc;
+	font-size: 1.4em;
+}
+
+label {
+  font-weight: 100;
+  color: #cccccc;    
+}
+
+.form-control {
+	border-radius: 0;
+}
+
+input[type="text"]:disabled, input[type="number"]:disabled {
+    background: #888888;
+    border-color: #888888;
+}
+
+.ticket-buttons button {
+	width: 10rem;
+}
+
+.btn-spinner {
+  display: inline-block;
+  opacity: 0;
+  width: 0;
+
+  transition: opacity 0.25s, width 0.25s;
+}
+
+.has-spinner.active {
+  cursor:progress;
+}
+
+.has-spinner.active .btn-spinner {
+  opacity: 1;
+  width: auto; 
+}
+
+.has-spinner.btn-mini.active .btn-spinner {
+    width: 10px;
+}
+
+.has-spinner.btn-small.active .btn-spinner {
+    width: 13px;
+}
+
+.has-spinner.btn.active .btn-spinner {
+    width: 16px;
+}
+
+.has-spinner.btn-large.active .btn-spinner {
+    width: 19px;
+}
+
+.fa-refresh {
+	margin-left: 1rem;
+}

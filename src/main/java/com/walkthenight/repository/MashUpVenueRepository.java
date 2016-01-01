@@ -121,5 +121,10 @@ public class MashUpVenueRepository implements VenueRepository, SeriesRepository,
 		return facebookVenueGateway.getEventSeriesLinks(eventId);
 	}
 
+	@Override
+	public void updateEvent(String eventId, String pageSlug, String tickeraEventId, String ticketId) {
+		eventWorksheet.addWtnManagedEvent(eventId, pageSlug, tickeraEventId, ticketId);
+	}
+
 
 }

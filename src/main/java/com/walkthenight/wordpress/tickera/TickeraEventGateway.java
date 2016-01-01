@@ -81,7 +81,7 @@ public class TickeraEventGateway {
 		} 
 	}
 	
-	public List<TicketedEvent> getTicketedEvents(String accessToken) {
+	public List<TicketedEvent> getTicketedEvents() {
 		HttpResponse response;
 		try {
 			response = executeGet("tc_events");
@@ -120,7 +120,7 @@ public class TickeraEventGateway {
 		return event;
 	}
 
-	public TicketedEvent getTicketedEvent(String eventId, String accessToken) {
+	public TicketedEvent getTicketedEvent(String eventId) {
 		try {
 			TicketedEvent event = getBaseEventData(eventId);
 			addPostMetaData(event);

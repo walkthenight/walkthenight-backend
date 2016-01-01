@@ -16,14 +16,39 @@ wtnTicketingApp.factory('eventRepository', ['$q', '$timeout', '$http', function(
 	return {
         getEvents : function(pageId) {
         	var d = $q.defer();
-            $http.get('/api/series/'+pageId+'/events?timeframe=future').success(function(events){
+            $http.get('/api/series/'+pageId+'/events?timeframe=future&cache=nocache').success(function(events){
                 d.resolve(events);
-                
-                
-                
             });
             return d.promise;
-        }
+        }, 
+	
+		getEvent : function(eventId) {
+	    	var d = $q.defer();
+	        $http.get('/api/events/'+eventId+'?cache=nocache').success(function(event){
+	            d.resolve(event);
+	        });
+	        return d.promise;
+	    }
+    }
+}]);
+
+wtnTicketingApp.factory('ticketedEventRepository', ['$q', '$timeout', '$http', function($q, $timeout, $http) {
+	return {
+        createTicketedEvent : function(ticketedEventSpec, accessToken) {
+        	var d = $q.defer();
+            $http.post('/api/ticketed-events?access_token='+accessToken, ticketedEventSpec).success(function(){
+                d.resolve(true);
+            });
+            return d.promise;
+        },
+	
+		getTicket : function(ticketId, accessToken) {
+	    	var d = $q.defer();
+	        $http.get('/api/tickets/'+ticketId+'?access_token='+accessToken).success(function(ticket){
+	            d.resolve(ticket);
+	        });
+	        return d.promise;
+	    }
     }
 }]);
 

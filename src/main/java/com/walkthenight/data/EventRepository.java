@@ -8,4 +8,6 @@ public interface EventRepository {
 
 	List<String> getEventSeriesLinks(String id);
 
+	void updateEvent(String facebookEventId, String pageSlug, String tickeraEventId, String ticketId);
+
 }

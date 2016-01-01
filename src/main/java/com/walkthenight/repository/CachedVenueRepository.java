@@ -1,6 +1,7 @@
 package com.walkthenight.repository;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -76,10 +77,12 @@ public class CachedVenueRepository implements VenueRepository, SeriesRepository,
 		String key= id+"-"+timeframe+"-events";
 		
 		if (cache.containsKey(key)) {
-			events=  (List<Event>)cache.get(key);
+			List<String> eventList=  (List<String>)cache.get(key);
+			events= getIndividualEventsFromCache(eventList);
 		} else {
 			events= underlyingRepository.getEvents(id, timeframe);
-			cache.put(key, events);
+			putEventIdListInCache(key, events);
+			putIndividualEventsInCache(events);
 		}
 		
 		// augment with URL
@@ -93,6 +96,30 @@ public class CachedVenueRepository implements VenueRepository, SeriesRepository,
 		}
 		
 		return events;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void putEventIdListInCache(String key, List<Event> events) {
+		List<String> eventIds= new ArrayList<>();
+		for (Event event : events) {
+			eventIds.add(event.id);
+		}
+		cache.put(key, eventIds);
+	}
+
+	private List<Event> getIndividualEventsFromCache(List<String> ids) {
+		List<Event> events= new ArrayList<>();
+		for (String id : ids) {
+			events.add(getEvent(id));
+		}
+		return events;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void putIndividualEventsInCache(List<Event> events) {
+		for (Event event : events) {
+			cache.put(event.id, event);
+		}
 	}
 
 	@Override
@@ -177,7 +204,7 @@ public class CachedVenueRepository implements VenueRepository, SeriesRepository,
 		
 		return event;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getEventSeriesLinks(String eventId) {
@@ -192,5 +219,13 @@ public class CachedVenueRepository implements VenueRepository, SeriesRepository,
 		}
 		return eventSeriesLinks;
 	}
+
+	@Override
+	public void updateEvent(String eventId, String pageSlug, String tickeraEventId, String ticketId) {
+		cache.remove(eventId);
+		underlyingRepository.updateEvent(eventId, pageSlug, tickeraEventId, ticketId);
+	}
+
+
 
 }

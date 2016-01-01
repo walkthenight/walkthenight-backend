@@ -79,8 +79,19 @@ public class TickeraTicketGateway {
         	 TicketJson[] tickets = mapper.readValue(json, typeFactory().constructArrayType(TicketJson.class));
         	 return mapTickets(tickets);
          } catch (IOException e) {
-        	 return null;
+        	 throw new RuntimeException(e);
          }
+	}
+	
+	private Ticket mapTicket(HttpResponse response) throws IOException {
+		String json = response.parseAsString();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+       	 TicketJson[] tickets = mapper.readValue(json, typeFactory().constructArrayType(TicketJson.class));
+       	 return mapTicket(tickets[0]);
+        } catch (IOException e) {
+        	throw new RuntimeException(e);
+        }
 	}
 
 	private List<Ticket> mapTickets(TicketJson[] tjs) {
@@ -95,27 +106,36 @@ public class TickeraTicketGateway {
 		Ticket ticket= new Ticket();
 		ticket.id= tj.id;
 		ticket.description= tj.title.rendered;
+		ticket.ticketsSold= tj.tickets_sold;
 		return ticket;
 	}
 
 	public Ticket getTicket(String ticketId) {
-		Map<String, String> postMetaMap = WordPressPostMetaGateway.readPostMeta(ticketId);	
-		if (null != postMetaMap && postMetaMap.size() > 0);
-		return mapPostMetaToTicket(postMetaMap);
+		HttpResponse response;
+		try {
+			response = executeGet("tc_tickets/"+ticketId);
+			Ticket ticket= mapTicket(response);
+			Map<String, String> postMetaMap = WordPressPostMetaGateway.readPostMeta(ticketId);	
+			if (null != postMetaMap && postMetaMap.size() > 0)
+				mapPostMetaToTicket(ticket, postMetaMap);
+			return ticket;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		
 	}
 	
-	private static Ticket mapPostMetaToTicket(Map<String, String> postMetaMap) {
-		Ticket ticket= new Ticket();
+	private static void mapPostMetaToTicket(Ticket ticket, Map<String, String> postMetaMap) {
 		ticket.pricePerTicket= postMetaMap.get("price_per_ticket");
 		ticket.quantityAvailable= postMetaMap.get("quantity_available");
 		ticket.eventId= postMetaMap.get("event_name");
-		return ticket;
 	}
 	
 	@JsonIgnoreProperties(ignoreUnknown=true)
 	private static class TicketJson {
 		public String id;
 		public RawAndRendered title;
+		public int tickets_sold;
 	}
 
 

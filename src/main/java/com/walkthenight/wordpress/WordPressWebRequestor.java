@@ -44,6 +44,7 @@ public class WordPressWebRequestor {
 	private static void setBasicAuth(HttpRequest request) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setBasicAuthentication(WordPressApiConfig.API_USER, WordPressApiConfig.API_PASSWORD);
+		headers.setAccept("application/json");
 		request.setHeaders(headers);
 	}
 	
