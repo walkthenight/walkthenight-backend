@@ -7,4 +7,14 @@
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
     </system-properties>
+    
+    <static-files>
+       <include path="/.well-known/acme-challenge/7qyF6AjpYCxh5DCZ2LqrHDNkGpoa1JvwvVED6IndYd8" />
+       <include path="/**.js" />
+       <include path="/**.jpg" />
+       <include path="/**.css" />
+       <include path="/**.svg" />
+       <include path="/**.ico" />
+       <include path="/**.html" />
+    </static-files>
 </appengine-web-app>

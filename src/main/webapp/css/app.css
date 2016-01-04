@@ -1,0 +1,123 @@
+html {
+    background: url(../img/490f1f49.stars-background.jpg) no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+body {
+    background: inherit;
+    color: #ffffff;
+    padding: 0;
+    margin: 0;
+    font-family: "Adelle", "Helvetica", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    position: relative;
+    cursor: default;
+}
+
+h1, h2, h3, h4 {
+    font-family: "Adelle", "Helvetica", Helvetica, Arial, sans-serif;
+}
+
+h2 {
+    font-style: italic;
+    font-weight: 300;
+    font-size: 2em;
+    font-size: 2rem;
+    color:#EC178C;
+}
+
+h3 {
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: -1.5px;
+    text-align: left;
+    font-size: 2.5em;
+    margin: 1.5em 0;
+}
+
+.subhead {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    justify-content: center;
+    margin: 6em 0;
+    text-align: right;
+}
+
+.subscribe {
+    font-weight: 400;
+    font-size: 2em;
+    font-size: 2rem;
+    color:#EC178C;
+    margin: 1.5em 0;
+}
+
+.subscribe p {
+    margin-bottom: 0;
+}
+
+.blurb {
+    font-weight: 200;
+    font-size: 1.75em;
+}
+
+.row {
+    max-width: 90rem;
+}
+
+.logo {
+    width: 13em;
+    margin: 3em 0;
+}
+
+.sublogo {
+    width: 24em;
+    padding-top: 2em;
+    margin: 2em 0 2em 0em;
+    text-align: right;
+}
+
+.iphone-mock {
+    width: 100%;
+}
+
+.second {
+    background: #ec178c;
+}
+
+.third {
+    background: #888888;
+    padding: 4em 0;
+    color: #16161d;
+}
+
+.fourth {
+    background: #000000;
+    padding: 4em 0;
+}
+
+.fifth {
+    background: #ffffff;
+    padding: 4em 0;
+}
+
+#mc_embed_signup form {
+    padding: 3rem 0;
+}
+
+#mc_embed_signup div.mce_inline_error {
+    font-weight: inherit;
+}
+
+#mc_embed_signup .button {
+    display: inline-block;
+    font-size: inherit;
+    font-weight: 200;
+    height: auto;
+    padding: 0.5rem 1rem;
+}

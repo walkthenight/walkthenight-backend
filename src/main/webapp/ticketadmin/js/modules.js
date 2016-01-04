@@ -1,4 +1,4 @@
-var wtnTicketingApp = angular.module('wtnTicketingApp', ['ngSanitize', 'ngAnimate', 'ngFacebook', 'angularSpinner']);
+var wtnTicketingApp = angular.module('wtnTicketingApp', ['ngSanitize', 'ngFacebook', 'angularSpinner', 'ngAnimate']);
 
 wtnTicketingApp.config( function( $facebookProvider ) {
   $facebookProvider.setAppId('591079647658892');

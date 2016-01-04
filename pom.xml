@@ -4,13 +4,13 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>war</packaging>
-	<version>0.1-alpha</version>
+	<version>0.1.1-beta</version>
 
 	<groupId>com.walkthenight</groupId>
 	<artifactId>walkthenight-backend</artifactId>
 
 	<properties>
-		<gae.version>1.9.27</gae.version>
+		<gae.version>1.9.30</gae.version>
 		<appengine.app.version>1</appengine.app.version>
 		<resteasy.version>3.0.14.Final</resteasy.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
