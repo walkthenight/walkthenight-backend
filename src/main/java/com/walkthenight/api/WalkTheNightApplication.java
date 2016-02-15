@@ -43,6 +43,8 @@ public class WalkTheNightApplication extends Application {
 		filter.getAllowedOrigins().add("http://local.walkthenight.com:8888");
 		filter.getAllowedOrigins().add("http://alpha.walkthenight.com");
 		filter.getAllowedOrigins().add("http://beta.walkthenight.com");
+		filter.getAllowedOrigins().add("https://alpha.walkthenight.com");
+		filter.getAllowedOrigins().add("https://beta.walkthenight.com");
 		filter.getAllowedOrigins().add("http://walkthenight.com");
 		filter.getAllowedOrigins().add("https://walkthenight.com");
 		filter.getAllowedOrigins().add("http://wtnall.wpengine.com");

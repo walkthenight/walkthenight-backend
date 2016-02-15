@@ -18,7 +18,7 @@ import com.google.api.client.util.Key;
 
 public class WordPressWebRequestor {
 	private static final String WP_JSON_V2 = "/wp-json/wp/v2/";
-	private static final String BASE_URL = "http://walkthenight.com/la";
+	private static final String BASE_URL = "https://walkthenight.com/la";
 
 	private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
 	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
