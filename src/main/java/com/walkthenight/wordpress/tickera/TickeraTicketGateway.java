@@ -37,6 +37,7 @@ public class TickeraTicketGateway {
 			postMetaMap.put("quantity_available", String.valueOf(quantity));
 			postMetaMap.put("min_tickets_per_order", "1");
 			postMetaMap.put("ticket_fee_type", "fixed");
+			postMetaMap.put("ticket_template", "898"); //:FIXME hard coded ticket template
 			
 			WordPressPostMetaGateway.writePostMeta(ticketJson.id, postMetaMap);
 			
