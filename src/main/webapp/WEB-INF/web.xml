@@ -37,7 +37,7 @@
 	</servlet-mapping>
 	
 	
-   <servlet>
+ <!--    <servlet>
     <servlet-name>proxy</servlet-name>
     <servlet-class>com.fadedglamour.gaereverseproxy.GaeReverseProxyServlet</servlet-class>
     <init-param>
@@ -52,7 +52,7 @@
    <servlet-mapping>
      <servlet-name>proxy</servlet-name>
      <url-pattern>/</url-pattern>
-   </servlet-mapping>
+   </servlet-mapping> -->
    
    <security-constraint>
       <web-resource-collection>

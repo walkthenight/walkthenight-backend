@@ -10,7 +10,7 @@
 	<artifactId>walkthenight-backend</artifactId>
 
 	<properties>
-		<gae.version>1.9.30</gae.version>
+		<gae.version>1.9.38</gae.version>
 		<appengine.app.version>1</appengine.app.version>
 		<resteasy.version>3.0.14.Final</resteasy.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>com.google.api-client</groupId>
 			<artifactId>google-api-client-appengine</artifactId>
-			<version>1.20.0</version>
+			<version>1.22.0</version>
 		</dependency>
 		<dependency>
 			<groupId>se.walkercrou</groupId>
@@ -40,7 +40,7 @@
 		<dependency>
 			<groupId>com.restfb</groupId>
 			<artifactId>restfb</artifactId>
-			<version>1.14.0</version>
+			<version>1.24.0</version>
 		</dependency>
 		<dependency>
 		  <groupId>org.jboss.resteasy</groupId>
@@ -70,22 +70,22 @@
 		<dependency>
 			<groupId>com.google.apis</groupId>
 			<artifactId>google-api-services-drive</artifactId>
-			<version>v2-rev167-1.20.0</version>
+			<version>v3-rev28-1.22.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.http-client</groupId>
 			<artifactId>google-http-client</artifactId>
-			<version>1.19.0</version>
+			<version>1.22.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.http-client</groupId>
 			<artifactId>google-http-client-jackson2</artifactId>
-			<version>1.20.0</version>
+			<version>1.22.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.oauth-client</groupId>
 			<artifactId>google-oauth-client-jetty</artifactId>
-			<version>1.20.0</version>
+			<version>1.22.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.appengine</groupId>

@@ -23,10 +23,10 @@ public class MashUpRepositoryTest {
 		testExistenceAndContentsOfList("Venue", repository.getVenues());
 	}
 	
-	@Test
-	public void shouldReturnPhotosForVenue() {
-		testExistenceAndContentsOfList("Photo", repository.getPhotos(STANDARD_DOWNTOWN_LA_VENUE_ID));
-	}
+//	@Test
+//	public void shouldReturnPhotosForVenue() {
+//		testExistenceAndContentsOfList("Photo", repository.getPhotos(STANDARD_DOWNTOWN_LA_VENUE_ID));
+//	}
 	
 	@Test
 	public void shouldReturnEventsForVenue() {

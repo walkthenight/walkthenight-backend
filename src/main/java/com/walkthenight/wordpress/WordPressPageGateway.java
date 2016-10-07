@@ -47,14 +47,6 @@ public class WordPressPageGateway {
 		
 		postMetaMap.put("cb_page_custom_sidebar_type","cb_unique_sidebar");
 		
-		//postMetaMap.put("_wp_page_template","default");
-		
-		//postMetaMap.put("vc_teaser","a:2:{s:4:\"data\";s:115:\"[{\"name\":\"title\",\"link\":\"post\"},{\"name\":\"image\",\"image\":\"featured\",\"link\":\"none\"},{\"name\":\"text\",\"mode\":\"excerpt\"}]\";s:7:\"bgcolor\";s:0:\"\";}");
-		
-		//postMetaMap.put("_wpas_done_all","1");
-		//postMetaMap.put("_wpb_vc_js_status","true");
-		//postMetaMap.put("_vc_post_settings","a:2:{s:7:\"vc_grid\";a:0:{}s:10:\"vc_grid_id\";a:0:{}}");
-		
 		WordPressPostMetaGateway.writePostMeta(pageId, postMetaMap);
 	}
 
